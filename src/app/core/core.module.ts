@@ -9,6 +9,9 @@ import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdia
 import { ToastyModule } from 'ng2-toasty';
 import { JwtHelper } from 'angular2-jwt';
 
+import { PermissaoService } from './../permissoes/permissao.service';
+import { UsuarioService } from './../usuarios/usuario.service';
+import { EmpresaService } from './../empresas/empresa.service';
 import { AuthService } from './../seguranca/auth.service';
 import { CategoriaService } from './../categorias/categoria.service';
 import { PessoaService } from './../pessoas/pessoa.service';
@@ -38,9 +41,12 @@ import { NaoAutorizadoComponent } from './nao-autorizado.component';
     ConfirmDialogModule
   ],
   providers: [
+    CategoriaService,
+    PermissaoService,
+    UsuarioService,
+    EmpresaService,
     LancamentoService,
     PessoaService,
-    CategoriaService,
     ErrorHandlerService,
     AuthService,
 

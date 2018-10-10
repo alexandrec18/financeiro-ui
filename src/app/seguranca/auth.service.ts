@@ -102,7 +102,7 @@ export class AuthService {
   private carregarToken() {
     const token = localStorage.getItem('token');
 
-    if (token){
+    if (token) {
       this.armazenarToken(token);
     }
   }

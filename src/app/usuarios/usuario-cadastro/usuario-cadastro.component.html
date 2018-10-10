@@ -1,0 +1,78 @@
+<div class="container">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1> {{ editando ? 'Edição de' : 'Novo' }} Usuário </h1>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" >
+        <label>Nome</label>
+        <input pInputText type="text" name="nome"
+          [(ngModel)]="usuario.nome" #nome="ngModel"
+          required minlength="5">
+
+        <app-message [control]="nome" error="required"
+          text="Informe o nome">
+        </app-message>
+        <app-message [control]="nome" error="minlength"
+          text="Mínimo de {{nome.errors?.minlength?.requiredLength}} caracteres.">
+        </app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Empresa</label>
+        <p-dropdown name="empresa" [options]="empresas"
+          placeholder="Selecione" [autoWidth]="false"
+          [(ngModel)]="usuario.empresa.codigo"
+          [filter]="true" required>
+        </p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" >
+        <label>E-mail</label>
+        <input pInputText type="text" name="email"
+          [(ngModel)]="usuario.email" #email="ngModel"
+          required email>
+
+        <app-message [control]="email" error="required"
+          text="Informe o email">
+        </app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid" >
+        <label>Senha</label>
+        <input pInputText type="text" name="senha"
+          [(ngModel)]="usuario.senha" #senha="ngModel"
+          required minlength="6">
+
+        <app-message [control]="senha" error="required"
+          text="Informe a senha">
+        </app-message>
+        <app-message [control]="senha" error="minlength"
+          text="Mínimo de {{nome.errors?.minlength?.requiredLength}} caracteres.">
+        </app-message>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Permissão</label>
+        <p-multiSelect [options]="permissoes" [(ngModel)]="usuario.permissoes"
+          placeholder="Selecione"name="permissao" #permissao="ngModel"
+          required>
+        </p-multiSelect>
+
+        <app-message [control]="permissao" error="required"
+          text="Informe a permissão.">
+        </app-message>
+      </div>
+
+      <div class="ui-g-12" >
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Novo" class="ui-button-info"
+          (click)="novo(f)"></button>
+        <a routerLink="/usuarios">Voltar para a pesquisa</a>
+      </div>
+    </div>
+
+  </form>
+</div>

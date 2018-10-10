@@ -12,12 +12,24 @@
 
     <li class="navbar-usuario">{{auth.jwtPayload?.nome}}</li>
     <li class="navbar-menuitem" routerLinkActive="ativo"
+      *ngIf="auth.temPermissao('ROLE_PESQUISAR_CATEGORIA')">
+        <a routerLink="/categorias">Categorias</a>
+    </li>
+    <li class="navbar-menuitem" routerLinkActive="ativo"
+      *ngIf="auth.temPermissao('ROLE_PESQUISAR_EMPRESA')">
+        <a routerLink="/empresas">Empresas</a>
+    </li>
+    <li class="navbar-menuitem" routerLinkActive="ativo"
       *ngIf="auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')">
         <a routerLink="/lancamentos">Lançamentos</a>
     </li>
     <li class="navbar-menuitem" routerLinkActive="ativo"
       *ngIf="auth.temPermissao('ROLE_PESQUISAR_PESSOA')">
         <a routerLink="/pessoas">Pessoas</a>
+    </li>
+    <li class="navbar-menuitem" routerLinkActive="ativo"
+      *ngIf="auth.temPermissao('ROLE_PESQUISAR_USUARIO')">
+        <a routerLink="/usuarios">Usuários</a>
     </li>
     <li class="navbar-menuitem">
       <a href="javascript:;" (click)="logout()">Logout</a>

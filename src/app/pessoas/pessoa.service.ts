@@ -1,3 +1,4 @@
+import { AuthService } from './../seguranca/auth.service';
 import { Headers, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 
@@ -18,7 +19,10 @@ export class PessoaService {
 
   pessoasUrl: string;
 
-  constructor(private http: AuthHttp) {
+  constructor(
+    private http: AuthHttp,
+    private auth: AuthService
+  ) {
     this.pessoasUrl = `${environment.apiUrl}/pessoas`;
   }
 
@@ -31,6 +35,8 @@ export class PessoaService {
     if (filtro.nome) {
       params.set('nome', filtro.nome);
     }
+
+    params.set('empresa', this.auth.jwtPayload.empresa.codigo);
 
     return this.http.get(`${this.pessoasUrl}`,
         { search: params })
@@ -49,8 +55,12 @@ export class PessoaService {
   }
 
   listarTodas(): Promise<any> {
+    const params = new URLSearchParams();
 
-    return this.http.get(this.pessoasUrl)
+    params.set('empresa', this.auth.jwtPayload.empresa.codigo);
+
+    return this.http.get(this.pessoasUrl,
+      { search: params })
       .toPromise()
       .then(response => response.json().content);
   }
@@ -70,6 +80,8 @@ export class PessoaService {
   }
 
   adicionar(pessoa: Pessoa): Promise<Pessoa> {
+
+    pessoa.empresa.codigo = this.auth.jwtPayload.empresa.codigo;
 
     return this.http.post(this.pessoasUrl,
         JSON.stringify(pessoa))

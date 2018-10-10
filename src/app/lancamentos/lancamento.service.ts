@@ -1,3 +1,4 @@
+import { AuthService } from './../seguranca/auth.service';
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
 
@@ -21,9 +22,12 @@ export class LancamentoService {
 
   lancamentosUrl: string;
 
-  constructor(private http: AuthHttp) {
-    this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
-   }
+  constructor(
+    private http: AuthHttp,
+    private auth: AuthService
+  ) {
+      this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
+    }
 
   pesquisar(filtro: LancamentoFiltro): Promise<any> {
     const params = new URLSearchParams();
@@ -44,6 +48,8 @@ export class LancamentoService {
       params.set('dataVencimentoAte',
         moment(filtro.dataVencimentoFim).format('YYYY-MM-DD'));
     }
+
+    params.set('empresa', this.auth.jwtPayload.empresa.codigo);
 
     return this.http.get(`${this.lancamentosUrl}?resumo`,
         { search: params })
@@ -69,6 +75,8 @@ export class LancamentoService {
   }
 
   adicionar(lancamento: Lancamento): Promise<Lancamento> {
+
+    lancamento.empresa.codigo = this.auth.jwtPayload.empresa.codigo;
 
     return this.http.post(this.lancamentosUrl,
         JSON.stringify(lancamento))

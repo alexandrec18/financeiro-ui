@@ -8,16 +8,18 @@ export class Endereco {
   estado: string;
 }
 
-
 export class Pessoa {
   codigo: number;
   nome: string;
   endereco = new Endereco();
   ativo: true;
+  empresa = new Empresa();
 }
 
 export class Categoria {
   codigo: number;
+  nome: string;
+  empresa = new Empresa();
 }
 
 export class Lancamento {
@@ -30,4 +32,19 @@ export class Lancamento {
   observacao: string;
   pessoa = new Pessoa();
   categoria = new Categoria();
+  empresa = new Empresa();
+}
+
+export class Empresa {
+  codigo: number;
+  nome: string;
+}
+
+export class Usuario {
+  codigo: number;
+  nome: string;
+  email: string;
+  senha: string;
+  empresa = new Empresa();
+  permissoes = [];
 }

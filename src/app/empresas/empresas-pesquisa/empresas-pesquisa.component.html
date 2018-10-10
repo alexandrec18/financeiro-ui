@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+      <div class="ui-g-12">
+        <h1>Empresas</h1>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+          <label>Nome</label>
+          <input pInputText type="text" name="nome"
+            [(ngModel)]="filtro.nome">
+      </div>
+
+      <div class="ui-g-12">
+          <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="ui-g">
+
+    <div class="ui-g-12">
+
+      <p-dataTable [value]="empresas" [responsive]="true"
+        emptyMessage="Nenhuma empresa encontrada!"
+        [paginator]="true" [rows]="filtro.itensPorPagina"
+        [lazy]="true" [totalRecords]="totalRegistros"
+        (onLazyLoad)="aoMudarPagina($event)"
+        #tabela>
+
+        <p-column field="nome" header="Nome"></p-column>
+        <p-column styleClass="col-acoes">
+          <ng-template let-emp="rowData" pTemplate="body">
+            <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top"
+              [routerLink]="['/empresas', emp.codigo]"></a>
+            <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top"
+              (click)="confirmarExclusao(emp)"
+              [disabled]="!auth.temPermissao('ROLE_REMOVER_EMPRESA')"></button>
+          </ng-template>
+        </p-column>
+
+      </p-dataTable>
+
+    </div>
+
+    <div class="ui-g-12">
+      <a pButton label="Nova Empresa" routerLink="/empresas/nova"></a>
+    </div>
+
+  </div>
+
+</div>
+
