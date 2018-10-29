@@ -27,7 +27,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: ['financeiro-api.herokuapp.com'],
+        whitelistedDomains: environment.tokenWhitelistedDomains,
         blacklistedRoutes: environment.tokenBlacklistedRoutes
       }
     }),
