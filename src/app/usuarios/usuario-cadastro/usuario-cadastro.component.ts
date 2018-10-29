@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { UsuarioService } from './../usuario.service';
 import { Usuario } from '../../core/model';
@@ -28,7 +28,7 @@ export class UsuarioCadastroComponent implements OnInit {
     private empresaService: EmpresaService,
     private permissoesService: PermissaoService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
     private title: Title
@@ -73,7 +73,7 @@ export class UsuarioCadastroComponent implements OnInit {
     this.atualizarPermissoesAdicionar();
     this.usuarioService.adicionar(this.usuario)
       .then(() => {
-        this.toasty.success('Usuário adicionado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Usuário adicionado com sucesso!'});
 
         form.reset();
         this.usuario = new Usuario();
@@ -88,7 +88,7 @@ export class UsuarioCadastroComponent implements OnInit {
         this.usuario = usuario;
 
         this.atualizarPermissoesEdicao();
-        this.toasty.success('Usuário alterado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Usuário alterado com sucesso!'});
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));

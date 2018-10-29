@@ -1,9 +1,10 @@
+import { GlobalHttp } from 'app/seguranca/global-http';
 import { AuthService } from './../seguranca/auth.service';
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 import { environment } from './../../environments/environment';
-import { AuthHttp } from 'angular2-jwt';
+
 import { Lancamento } from './../core/model';
 
 import 'rxjs/add/operator/toPromise';
@@ -23,44 +24,43 @@ export class LancamentoService {
   lancamentosUrl: string;
 
   constructor(
-    private http: AuthHttp,
+    private http: GlobalHttp,
     private auth: AuthService
   ) {
       this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
     }
 
   pesquisar(filtro: LancamentoFiltro): Promise<any> {
-    const params = new URLSearchParams();
+    let params = new HttpParams();
 
-    params.set('page', filtro.pagina.toString());
-    params.set('size', filtro.itensPorPagina.toString());
+    params = params.append('page', filtro.pagina.toString());
+    params = params.append('size', filtro.itensPorPagina.toString());
 
     if (filtro.descricao) {
-      params.set('descricao', filtro.descricao);
+      params = params.append('descricao', filtro.descricao);
     }
 
     if (filtro.dataVencimentoInicio) {
-      params.set('dataVencimentoDe',
+      params = params.append('dataVencimentoDe',
         moment(filtro.dataVencimentoInicio).format('YYYY-MM-DD'));
     }
 
     if (filtro.dataVencimentoFim) {
-      params.set('dataVencimentoAte',
+      params = params.append('dataVencimentoAte',
         moment(filtro.dataVencimentoFim).format('YYYY-MM-DD'));
     }
 
-    params.set('empresa', this.auth.jwtPayload.empresa.codigo);
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
-    return this.http.get(`${this.lancamentosUrl}?resumo`,
-        { search: params })
+    return this.http.get<any>(`${this.lancamentosUrl}?resumo`,
+        { params })
       .toPromise()
       .then(response => {
-        const responseJson = response.json();
-        const lancamentos = responseJson.content;
+        const lancamentos = response.content;
 
         const resultado = {
           lancamentos,
-          total: responseJson.totalElements
+          total: response.totalElements
         };
 
         return resultado;
@@ -78,19 +78,16 @@ export class LancamentoService {
 
     lancamento.empresa.codigo = this.auth.jwtPayload.empresa.codigo;
 
-    return this.http.post(this.lancamentosUrl,
-        JSON.stringify(lancamento))
-      .toPromise()
-      .then(response => response.json());
+    return this.http.post<Lancamento>(this.lancamentosUrl, lancamento)
+      .toPromise();
   }
 
   atualizar(lancamento: Lancamento): Promise<Lancamento> {
 
-    return this.http.put(`${this.lancamentosUrl}/${lancamento.codigo}`,
-        JSON.stringify(lancamento))
+    return this.http.put<Lancamento>(`${this.lancamentosUrl}/${lancamento.codigo}`, lancamento)
       .toPromise()
       .then(response => {
-        const lancamentoAlterado = response.json() as Lancamento;
+        const lancamentoAlterado = response;
 
         this.converterStringsParaDatas([lancamentoAlterado]);
 
@@ -100,10 +97,10 @@ export class LancamentoService {
 
   buscarPorCodigo(codigo: number): Promise<Lancamento> {
 
-    return this.http.get(`${this.lancamentosUrl}/${codigo}`)
+    return this.http.get<Lancamento>(`${this.lancamentosUrl}/${codigo}`)
       .toPromise()
       .then(response => {
-        const lancamento = response.json() as Lancamento;
+        const lancamento = response;
 
         this.converterStringsParaDatas([lancamento]);
 

@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 import { Lancamento } from './../../core/model';
 import { ErrorHandlerService } from './../../core/error-handler.service';
@@ -32,7 +32,7 @@ export class LancamentoCadastroComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private pessoaService: PessoaService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
     private title: Title
@@ -75,7 +75,7 @@ export class LancamentoCadastroComponent implements OnInit {
   adicionarLancamento(form: FormControl) {
     this.lancamentoService.adicionar(this.lancamento)
       .then(lancamentoAdicionado => {
-        this.toasty.success('Lançamento adicionado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Lançamento adicionado com sucesso!'});
 
         this.router.navigate(['/lancamentos', lancamentoAdicionado.codigo]);
       })
@@ -87,7 +87,7 @@ export class LancamentoCadastroComponent implements OnInit {
       .then(lancamento => {
         this.lancamento = lancamento;
 
-        this.toasty.success('Lançamento alterado com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Lançamento alterado com sucesso!'});
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));

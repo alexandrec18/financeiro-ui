@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { EmpresaService } from './../empresa.service';
 import { Empresa } from './../../core/model';
@@ -20,7 +20,7 @@ export class EmpresaCadastroComponent implements OnInit {
   constructor(
     private empresaService: EmpresaService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
     private title: Title
@@ -59,7 +59,7 @@ export class EmpresaCadastroComponent implements OnInit {
   adicionarEmpresa(form: FormControl) {
     this.empresaService.adicionar(this.empresa)
       .then(() => {
-        this.toasty.success('Empresa adicionada com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Empresa adicionada com sucesso!' });
 
         form.reset();
         this.empresa = new Empresa();
@@ -72,7 +72,7 @@ export class EmpresaCadastroComponent implements OnInit {
       .then(empresa => {
         this.empresa = empresa;
 
-        this.toasty.success('Empresa alterada com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Empresa alterada com sucesso!' });
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));

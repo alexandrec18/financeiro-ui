@@ -1,14 +1,18 @@
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
-import { ConfirmationService } from 'primeng/components/common/api';
-import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdialog';
-import { ToastyModule } from 'ng2-toasty';
-import { JwtHelper } from 'angular2-jwt';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { GrowlModule } from 'primeng/growl';
+import { MessageService } from 'primeng/components/common/messageservice';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
+import { RelatoriosService } from './../relatorios/relatorios.service';
+import { DashboardService } from './../dashboard/dashboard.service';
 import { PermissaoService } from './../permissoes/permissao.service';
 import { UsuarioService } from './../usuarios/usuario.service';
 import { EmpresaService } from './../empresas/empresa.service';
@@ -20,14 +24,17 @@ import { LancamentoService } from './../lancamentos/lancamento.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
+import { GlobalHttp } from 'app/seguranca/global-http';
+
+registerLocaleData(localePt);
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule,
 
-    ToastyModule.forRoot(),
+    GrowlModule,
     ConfirmDialogModule,
   ],
   declarations: [
@@ -37,23 +44,27 @@ import { NaoAutorizadoComponent } from './nao-autorizado.component';
   ],
   exports: [
     NavbarComponent,
-    ToastyModule,
+    GrowlModule,
     ConfirmDialogModule
   ],
   providers: [
-    CategoriaService,
-    PermissaoService,
-    UsuarioService,
-    EmpresaService,
     LancamentoService,
     PessoaService,
+    CategoriaService,
+    EmpresaService,
+    UsuarioService,
+    PermissaoService,
+    DashboardService,
+    RelatoriosService,
     ErrorHandlerService,
     AuthService,
+    GlobalHttp,
 
     ConfirmationService,
-    JwtHelper,
+    MessageService,
+    JwtHelperService,
     Title,
-    { provide: LOCALE_ID, useValue: 'pt-BR' }
+    { provide: LOCALE_ID, useValue: 'pt' }
   ]
 })
 export class CoreModule { }

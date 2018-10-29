@@ -1,4 +1,3 @@
-import { AuthService } from './../../seguranca/auth.service';
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -6,7 +5,7 @@ import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/ap
 
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { EmpresaFiltro, EmpresaService } from './../empresa.service';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Component({
   selector: 'app-empresas-pesquisa',
@@ -24,9 +23,8 @@ export class EmpresasPesquisaComponent implements OnInit {
     private empresaService: EmpresaService,
     private errorHandler: ErrorHandlerService,
     private confirmation: ConfirmationService,
-    private toasty: ToastyService,
-    private title: Title,
-    private auth: AuthService
+    private messageService: MessageService,
+    private title: Title
   ) { }
 
   ngOnInit() {
@@ -65,9 +63,10 @@ export class EmpresasPesquisaComponent implements OnInit {
           this.pesquisar();
         } else {
           this.grid.first = 0;
+          this.pesquisar();
         }
 
-        this.toasty.success('Empresa excluída com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Empresa excluída com sucesso!'});
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

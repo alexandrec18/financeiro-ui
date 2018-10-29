@@ -1,6 +1,6 @@
 import { AuthService } from './../../seguranca/auth.service';
 import { Title } from '@angular/platform-browser';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/api';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { UsuarioFiltro, UsuarioService } from './../usuario.service';
@@ -22,7 +22,7 @@ export class UsuariosPesquisaComponent implements OnInit {
     private usuarioService: UsuarioService,
     private errorHandler: ErrorHandlerService,
     private confirmation: ConfirmationService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private title: Title,
     private auth: AuthService
   ) { }
@@ -63,9 +63,10 @@ export class UsuariosPesquisaComponent implements OnInit {
           this.pesquisar();
         } else {
           this.grid.first = 0;
+          this.pesquisar();
         }
 
-        this.toasty.success('Usuário excluído com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Usuário excluído com sucesso!'});
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

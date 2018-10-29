@@ -25,26 +25,46 @@
 
     <div class="ui-g-12">
 
-      <p-dataTable [value]="usuarios" [responsive]="true"
-        emptyMessage="Nenhum usuário encontrado!"
+      <p-table [value]="usuarios" [responsive]="true"
         [paginator]="true" [rows]="filtro.itensPorPagina"
         [lazy]="true" [totalRecords]="totalRegistros"
         (onLazyLoad)="aoMudarPagina($event)"
         #tabela>
 
-        <p-column field="nome" header="Nome"></p-column>
-        <p-column field="email" header="E-mail"></p-column>
-        <p-column styleClass="col-acoes">
-          <ng-template let-usu="rowData" pTemplate="body">
-            <a pButton icon="fa-pencil" pTooltip="Editar" tooltipPosition="top"
-              [routerLink]="['/usuarios', usu.codigo]"></a>
-            <button pButton icon="fa-trash" pTooltip="Excluir" tooltipPosition="top"
-              (click)="confirmarExclusao(usu)"
-              [disabled]="!auth.temPermissao('ROLE_REMOVER_USUARIO')"></button>
-          </ng-template>
-        </p-column>
 
-      </p-dataTable>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-usuario>
+          <tr>
+            <td>{{ usuario.nome }}</td>
+            <td>{{ usuario.email }}</td>
+            <td class="col-acoes">
+              <a pButton icon="fa fa-pencil"
+                pTooltip="Editar" tooltipPosition="top"
+                [routerLink]="['/usuarios', usuario.codigo]"></a>
+
+              <button pButton icon="fa fa-trash"
+                pTooltip="Excluir" tooltipPosition="top"
+                (click)="confirmarExclusao(usuario)"></button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="3">
+              Nenhum usuário encontrado!
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
 
     </div>
 

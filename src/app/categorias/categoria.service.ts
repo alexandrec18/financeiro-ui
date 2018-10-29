@@ -4,9 +4,10 @@ import { Injectable } from '@angular/core';
 import { Categoria } from './../core/model';
 import { AuthService } from './../seguranca/auth.service';
 import { environment } from './../../environments/environment';
-import { AuthHttp } from 'angular2-jwt';
+import { GlobalHttp } from 'app/seguranca/global-http';
 
 import 'rxjs/add/operator/toPromise';
+import { HttpParams } from '@angular/common/http';
 
 export class CategoriaFiltro {
   nome: string;
@@ -20,34 +21,33 @@ export class CategoriaService {
   categoriasUrl: string;
 
   constructor(
-    private http: AuthHttp,
+    private http: GlobalHttp,
     private auth: AuthService
   ) {
     this.categoriasUrl = `${environment.apiUrl}/categorias`;
   }
 
   pesquisar(filtro: CategoriaFiltro): Promise<any> {
-    const params = new URLSearchParams();
+    let params = new HttpParams();
 
-    params.set('page', filtro.pagina.toString());
-    params.set('size', filtro.itensPorPagina.toString());
+    params = params.append('page', filtro.pagina.toString());
+    params = params.append('size', filtro.itensPorPagina.toString());
 
     if (filtro.nome) {
-      params.set('nome', filtro.nome);
+      params = params.append('nome', filtro.nome);
     }
 
-    params.set('empresa', this.auth.jwtPayload.empresa.codigo);
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
-    return this.http.get(`${this.categoriasUrl}`,
-        { search: params })
+    return this.http.get<any>(`${this.categoriasUrl}`,
+        { params })
       .toPromise()
       .then(response => {
-        const responseJson = response.json();
-        const categorias = responseJson.content;
+        const categorias = response.content;
 
         const resultado = {
           categorias,
-          total: responseJson.totalElements
+          total: response.totalElements
         };
 
         return resultado;
@@ -55,14 +55,14 @@ export class CategoriaService {
   }
 
   listarTodas(): Promise<any> {
-    const params = new URLSearchParams();
+    let params = new HttpParams();
 
-    params.set('empresa', this.auth.jwtPayload.empresa.codigo);
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
-    return this.http.get(this.categoriasUrl,
-        { search: params })
+    return this.http.get<any>(this.categoriasUrl,
+        { params })
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => response.content);
   }
 
   excluir(codigo: number): Promise<void>  {
@@ -76,19 +76,16 @@ export class CategoriaService {
 
     categoria.empresa.codigo = this.auth.jwtPayload.empresa.codigo;
 
-    return this.http.post(this.categoriasUrl,
-        JSON.stringify(categoria))
-      .toPromise()
-      .then(response => response.json());
+    return this.http.post<Categoria>(this.categoriasUrl, categoria)
+      .toPromise();
   }
 
   atualizar(categoria: Categoria): Promise<Categoria> {
 
-    return this.http.put(`${this.categoriasUrl}/${categoria.codigo}`,
-        JSON.stringify(categoria))
+    return this.http.put<Categoria>(`${this.categoriasUrl}/${categoria.codigo}`, categoria)
       .toPromise()
       .then(response => {
-        const categoriaAlterada = response.json() as Categoria;
+        const categoriaAlterada = response;
 
         return categoriaAlterada;
       });
@@ -96,10 +93,10 @@ export class CategoriaService {
 
   buscarPorCodigo(codigo: number): Promise<Categoria> {
 
-    return this.http.get(`${this.categoriasUrl}/${codigo}`)
+    return this.http.get<Categoria>(`${this.categoriasUrl}/${codigo}`)
       .toPromise()
       .then(response => {
-        const categoria = response.json() as Categoria;
+        const categoria = response;
 
         return categoria;
       });

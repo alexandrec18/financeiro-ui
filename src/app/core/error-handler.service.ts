@@ -1,15 +1,15 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { NotAuthenticatedError } from './../seguranca/global-http';
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 
 @Injectable()
 export class ErrorHandlerService {
 
   constructor(
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private router: Router) { }
 
   handle(errorResponse: any) {
@@ -22,10 +22,9 @@ export class ErrorHandlerService {
       msg = 'Sua sessão expirou!';
       this.router.navigate(['/login']);
 
-    } else if  (errorResponse instanceof Response
+    } else if  (errorResponse instanceof HttpErrorResponse
       && errorResponse.status >= 400 && errorResponse.status <= 499)  {
 
-        let errors;
         msg = 'Ocorreu um erro ao processar a sua solicitação!';
 
         if (errorResponse.status === 403) {
@@ -33,9 +32,7 @@ export class ErrorHandlerService {
         }
 
         try {
-          errors = errorResponse.json();
-
-          msg = errors[0].messagemUsuario;
+          msg = errorResponse.error[0].messagemUsuario;
         } catch (e) { }
 
         console.log('Ocorreu um erro 4xx', errorResponse);
@@ -45,6 +42,6 @@ export class ErrorHandlerService {
       console.log('Ocorreu um erro!', errorResponse);
     }
 
-    this.toasty.error(msg);
+    this.messageService.add({ severity: 'error', detail: msg});
   }
 }

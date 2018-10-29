@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { ToastyService } from 'ng2-toasty';
+import { MessageService } from 'primeng/components/common/messageservice';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { CategoriaService } from './../categoria.service';
 import { Categoria } from './../../core/model';
@@ -20,7 +20,7 @@ export class CategoriaCadastroComponent implements OnInit {
   constructor(
     private categoriaService: CategoriaService,
     private errorHandler: ErrorHandlerService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
     private title: Title
@@ -60,7 +60,7 @@ export class CategoriaCadastroComponent implements OnInit {
   adicionarCategoria(form: FormControl) {
     this.categoriaService.adicionar(this.categoria)
       .then(() => {
-        this.toasty.success('Categoria adicionada com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Categoria adicionada com sucesso!'});
 
         form.reset();
         this.categoria = new Categoria();
@@ -73,7 +73,7 @@ export class CategoriaCadastroComponent implements OnInit {
       .then(categoria => {
         this.categoria = categoria;
 
-        this.toasty.success('Categoria alterada com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Categoria alterada com sucesso!'});
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));

@@ -1,10 +1,11 @@
-import { AuthService } from './../../seguranca/auth.service';
 import { Title } from '@angular/platform-browser';
-import { ToastyService } from 'ng2-toasty';
-import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/api';
-import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
+import { MessageService } from 'primeng/components/common/messageservice';
+import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/api';
+
+import { ErrorHandlerService } from './../../core/error-handler.service';
+import { AuthService } from './../../seguranca/auth.service';
 import { CategoriaFiltro, CategoriaService } from './../categoria.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class CategoriasPesquisaComponent implements OnInit {
     private categoriaService: CategoriaService,
     private errorHandler: ErrorHandlerService,
     private confirmation: ConfirmationService,
-    private toasty: ToastyService,
+    private messageService: MessageService,
     private title: Title,
     private auth: AuthService
   ) { }
@@ -64,9 +65,10 @@ export class CategoriasPesquisaComponent implements OnInit {
           this.pesquisar();
         } else {
           this.grid.first = 0;
+          this.pesquisar();
         }
 
-        this.toasty.success('Categoria excluída com sucesso!');
+        this.messageService.add({ severity: 'success', detail: 'Categoria excluída com sucesso!'});
       })
       .catch(erro => this.errorHandler.handle(erro));
   }

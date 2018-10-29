@@ -6,17 +6,17 @@ import { LancamentoCadastroComponent } from './lancamento-cadastro/lancamento-ca
 import { LancamentosPesquisaComponent } from './lancamentos-pesquisa/lancamentos-pesquisa.component';
 
 const routes: Routes = [
-  { path: 'lancamentos',
+  { path: '',
     component: LancamentosPesquisaComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_PESQUISAR_LANCAMENTO'] }
   },
-  { path: 'lancamentos/novo',
+  { path: 'novo',
     component: LancamentoCadastroComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }
   },
-  { path: 'lancamentos/:codigo',
+  { path: ':codigo',
     component: LancamentoCadastroComponent,
     canActivate: [AuthGuard],
     data: { roles: ['ROLE_CADASTRAR_LANCAMENTO'] }

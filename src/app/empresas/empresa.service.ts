@@ -1,10 +1,11 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Empresa } from './../core/model';
 import { environment } from './../../environments/environment';
-import { AuthHttp } from 'angular2-jwt';
 
 import 'rxjs/add/operator/toPromise';
+import { GlobalHttp } from 'app/seguranca/global-http';
 
 export class EmpresaFiltro {
   nome: string;
@@ -18,31 +19,29 @@ export class EmpresaService {
   empresaUrl: string;
 
   constructor(
-    private http: AuthHttp
+    private http: GlobalHttp
   ) {
     this.empresaUrl = `${environment.apiUrl}/empresas`;
   }
 
   pesquisar(filtro: EmpresaFiltro): Promise<any> {
-    const params = new URLSearchParams();
+    let params = new HttpParams();
 
-    params.set('page', filtro.pagina.toString());
-    params.set('size', filtro.itensPorPagina.toString());
+    params = params.append('page', filtro.pagina.toString());
+    params = params.append('size', filtro.itensPorPagina.toString());
 
     if (filtro.nome) {
-      params.set('nome', filtro.nome);
+      params = params.append('nome', filtro.nome);
     }
 
-    return this.http.get(`${this.empresaUrl}`,
-        { search: params })
+    return this.http.get<any>(`${this.empresaUrl}`, { params })
       .toPromise()
       .then(response => {
-        const responseJson = response.json();
-        const empresas = responseJson.content;
+        const empresas = response.content;
 
         const resultado = {
           empresas,
-          total: responseJson.totalElements
+          total: response.totalElements
         };
 
         return resultado;
@@ -51,9 +50,9 @@ export class EmpresaService {
 
   listarTodas(): Promise<any> {
 
-    return this.http.get(this.empresaUrl)
+    return this.http.get<any>(this.empresaUrl)
       .toPromise()
-      .then(response => response.json().content);
+      .then(response => response.content);
   }
 
   excluir(codigo: number): Promise<void>  {
@@ -65,19 +64,16 @@ export class EmpresaService {
 
   adicionar(empresa: Empresa): Promise<Empresa> {
 
-    return this.http.post(this.empresaUrl,
-        JSON.stringify(empresa))
-      .toPromise()
-      .then(response => response.json());
+    return this.http.post<Empresa>(this.empresaUrl, empresa)
+      .toPromise();
   }
 
   atualizar(empresa: Empresa): Promise<Empresa> {
 
-    return this.http.put(`${this.empresaUrl}/${empresa.codigo}`,
-        JSON.stringify(empresa))
+    return this.http.put<Empresa>(`${this.empresaUrl}/${empresa.codigo}`, empresa)
       .toPromise()
       .then(response => {
-        const empresaAlterada = response.json() as Empresa;
+        const empresaAlterada = response;
 
         return empresaAlterada;
       });
@@ -85,10 +81,10 @@ export class EmpresaService {
 
   buscarPorCodigo(codigo: number): Promise<Empresa> {
 
-    return this.http.get(`${this.empresaUrl}/${codigo}`)
+    return this.http.get<Empresa>(`${this.empresaUrl}/${codigo}`)
       .toPromise()
       .then(response => {
-        const empresa = response.json() as Empresa;
+        const empresa = response;
 
         return empresa;
       });

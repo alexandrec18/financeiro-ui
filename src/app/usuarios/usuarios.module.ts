@@ -1,13 +1,13 @@
-import { DropdownModule } from 'primeng/components/dropdown/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { MultiSelectModule } from 'primeng/components/multiselect/multiselect';
-import { TooltipModule } from 'primeng/components/tooltip/tooltip';
-import { DataTableModule } from 'primeng/components/datatable/datatable';
-import { ButtonModule } from 'primeng/components/button/button';
-import { InputTextModule } from 'primeng/components/inputtext/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { SharedModule } from './../shared/shared.module';
@@ -21,7 +21,7 @@ import { UsuariosPesquisaComponent } from './usuarios-pesquisa/usuarios-pesquisa
 
     InputTextModule,
     ButtonModule,
-    DataTableModule,
+    TableModule,
     TooltipModule,
     DropdownModule,
 
