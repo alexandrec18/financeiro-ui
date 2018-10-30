@@ -19,11 +19,11 @@ export class DashboardService {
 
   lancamentosPorCategoria(): Promise<Array<any>> {
 
-    let cabecalho = new HttpHeaders();
+    let headers = new HttpHeaders();
 
-    cabecalho = cabecalho.append('token', localStorage.getItem('token'));
+    headers = headers.append('token', localStorage.getItem('token'));
 
-    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-categoria`, {  header: cabecalho })
+    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-categoria`, {  headers })
       .toPromise();
   }
 
