@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 
@@ -17,7 +18,12 @@ export class DashboardService {
   }
 
   lancamentosPorCategoria(): Promise<Array<any>> {
-    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-categoria`)
+
+    let cabecalho = new HttpHeaders();
+
+    cabecalho = cabecalho.append('token', localStorage.getItem('token'));
+
+    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-categoria`, {  header: cabecalho })
       .toPromise();
   }
 
