@@ -28,7 +28,8 @@ export function tokenGetter() {
       config: {
         tokenGetter: tokenGetter,
         whitelistedDomains: environment.tokenWhitelistedDomains,
-        blacklistedRoutes: environment.tokenBlacklistedRoutes
+        blacklistedRoutes: environment.tokenBlacklistedRoutes,
+        headerName: 'Authorization'
       }
     }),
     InputTextModule,
