@@ -7,7 +7,7 @@ import { environment } from './../../environments/environment';
 import { GlobalHttp } from 'app/seguranca/global-http';
 
 import 'rxjs/add/operator/toPromise';
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpHeaders } from '@angular/common/http';
 
 export class CategoriaFiltro {
   nome: string;
@@ -30,6 +30,9 @@ export class CategoriaService {
   pesquisar(filtro: CategoriaFiltro): Promise<any> {
     let params = new HttpParams();
 
+    const headers = new HttpHeaders()
+      .append('Authorization', 'Bearer ' + localStorage.getItem('token'));
+
     params = params.append('page', filtro.pagina.toString());
     params = params.append('size', filtro.itensPorPagina.toString());
 
@@ -40,7 +43,7 @@ export class CategoriaService {
     params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
     return this.http.get<any>(`${this.categoriasUrl}`,
-        { params })
+        { headers, params, withCredentials: true })
       .toPromise()
       .then(response => {
         const categorias = response.content;
