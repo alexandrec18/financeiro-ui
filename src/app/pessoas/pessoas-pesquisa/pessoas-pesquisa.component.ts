@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { PessoaFiltro, PessoaService } from './../pessoa.service';
 import { ErrorHandlerService } from '../../core/error-handler.service';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-pessoas-pesquisa',
@@ -14,6 +15,7 @@ export class PessoasPesquisaComponent implements OnInit {
   totalRegistros = 0;
   filtro = new PessoaFiltro;
   pessoas = [];
+  items: MenuItem[];
 
   constructor(
     private pessoaService: PessoaService,
@@ -22,6 +24,11 @@ export class PessoasPesquisaComponent implements OnInit {
 
   ngOnInit() {
     this.title.setTitle('Pesquisa de pessoas');
+
+    this.items = [
+      {label: 'Física', routerLink: ['/pessoas/nova', 'F']},
+      {label: 'Jurídica',  routerLink: ['/pessoas/nova', 'J']}
+    ];
   }
 
   pesquisar(pagina = 0) {

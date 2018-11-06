@@ -18,6 +18,26 @@ export class Endereco {
   cidade = new Cidade();
 }
 
+export class Fisica {
+  dataNascimento: Date;
+  sexo: string;
+  cpf: string;
+  rg: string;
+  numeroPassaporte: string;
+  validadePassaporte: Date;
+  telefoneResidencial: string;
+  telefoneCelular: string;
+  telefoneComercial: string;
+};
+
+export class Juridica {
+  razaoSocial: string;
+  cnpj: string;
+  inscricaoEstadual: string;
+  website: string;
+  telefone: string;
+};
+
 export class Contato {
   codigo: number;
   nome: string;
@@ -42,6 +62,14 @@ export class Pessoa {
   ativo: true;
   empresa = new Empresa();
   contatos = Array<Contato>();
+  fisica = new Fisica();
+  juridica = new Juridica();
+  inscricaoMunicipal: string;
+  observacao: string;
+  email: string;
+  tipo: string;
+  dataCadastro: Date;
+  usuarioCadastro = new Usuario();
 }
 
 export class Categoria {

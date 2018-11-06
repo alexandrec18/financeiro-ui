@@ -8,6 +8,7 @@ import { environment } from './../../environments/environment';
 import { Pessoa, Estado, Cidade } from './../core/model';
 
 import 'rxjs/add/operator/toPromise';
+import * as moment from 'moment';
 
 export class PessoaFiltro {
   nome: string;
@@ -88,6 +89,7 @@ export class PessoaService {
   adicionar(pessoa: Pessoa): Promise<Pessoa> {
 
     pessoa.empresa.codigo = this.auth.jwtPayload.empresa.codigo;
+    pessoa.usuarioCadastro.codigo = this.auth.jwtPayload.codigo;
 
     return this.http.post<Pessoa>(this.pessoasUrl, pessoa)
       .toPromise();
@@ -100,6 +102,8 @@ export class PessoaService {
       .then(response => {
         const pessoaAlterado = response;
 
+        this.converterStringsParaDatas([pessoaAlterado]);
+
         return pessoaAlterado;
       });
   }
@@ -111,8 +115,24 @@ export class PessoaService {
       .then(response => {
         const pessoa = response;
 
+        this.converterStringsParaDatas([pessoa]);
+
         return pessoa;
       });
+  }
+
+  private converterStringsParaDatas(pessoas: Pessoa[]) {
+    for (const pessoa of pessoas) {
+      if (pessoa.fisica) {
+        pessoa.fisica.dataNascimento = moment(pessoa.fisica.dataNascimento,
+          'YYYY-MM-DD').toDate();
+
+        if (pessoa.fisica.validadePassaporte) {
+          pessoa.fisica.validadePassaporte = moment(pessoa.fisica.validadePassaporte,
+            'YYYY-MM-DD').toDate();
+        }
+      }
+    }
   }
 
   listarEstados(): Promise<Estado[]> {

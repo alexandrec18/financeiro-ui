@@ -1,0 +1,71 @@
+<form #fisicaForm="ngForm">
+  <div class="ui-g-6 ui-md-3 ui-fluid">
+    <label>Nascimento</label>
+    <p-calendar name="dataNascimento" dateFormat="dd/mm/yy"
+      [inline]="false" [readonlyInput]="false" [showIcon]="false"
+      [(ngModel)]="pessoa.fisica.dataNascimento"
+      #dataNascimento="ngModel" required></p-calendar>
+
+      <app-message [control]="dataNascimento" error="required"
+        text="Informe o nascimento"></app-message>
+  </div>
+
+  <div class="ui-g-6 ui-md-3 ui-fluid">
+    <label>Sexo</label>
+
+    <p-dropdown placeholder="Selecione..." [autoWidth]="false"
+      [options]="sexos" [(ngModel)]="pessoa.fisica.sexo" name="sexo"
+      #sexo="ngModel" required></p-dropdown>
+
+    <app-message [control]="sexo" error="required"
+      text="Informe o sexo"></app-message>
+  </div>
+
+  <div class="ui-g-6 ui-md-3 ui-fluid" >
+    <label>Cpf</label>
+    <input pInputText type="text" name="cpf"
+      [(ngModel)]="pessoa.fisica.cpf"
+      #cpf="ngModel" required>
+
+    <app-message [control]="cpf" error="required"
+      text="Informe o cpf"></app-message>
+  </div>
+
+  <div class="ui-g-6 ui-md-3 ui-fluid" >
+    <label>Rg</label>
+    <input pInputText type="text" name="rg"
+      [(ngModel)]="pessoa.fisica.rg">
+  </div>
+
+  <div class="ui-g-12 ui-md-6 ui-fluid" >
+    <label>Passaport nº</label>
+    <input pInputText type="text" name="numeroPassaporte"
+      [(ngModel)]="pessoa.fisica.numeroPassaporte">
+  </div>
+
+  <div class="ui-g-12 ui-md-6 ui-fluid">
+    <label>Validade Passaporte</label>
+    <p-calendar name="validadePassaporte" dateFormat="dd/mm/yy"
+      [inline]="false" [readonlyInput]="false" [showIcon]="false"
+      [(ngModel)]="pessoa.fisica.validadePassaporte"></p-calendar>
+  </div>
+
+  <div class="ui-g-12 ui-md-4 ui-fluid" >
+    <label>Telefone Residencial</label>
+    <input pInputText type="text" name="telefoneResidencial"
+      [(ngModel)]="pessoa.fisica.telefoneResidencial">
+  </div>
+
+  <div class="ui-g-12 ui-md-4 ui-fluid" >
+    <label>Telefone Celular</label>
+    <input pInputText type="text" name="telefoneCelular"
+      [(ngModel)]="pessoa.fisica.telefoneCelular">
+  </div>
+
+  <div class="ui-g-12 ui-md-4 ui-fluid" >
+    <label>Telefone Comercial</label>
+    <input pInputText type="text" name="telefoneComercial"
+      [(ngModel)]="pessoa.fisica.telefoneComercial">
+  </div>
+</form>
+

@@ -1,0 +1,35 @@
+<form #juridicaForm="ngForm">
+  <div class="ui-g-12 ui-md-9 ui-fluid" >
+    <label>Razão Social</label>
+    <input pInputText type="text" name="razaoSocial"
+      [(ngModel)]="pessoa.juridica.razaoSocial"
+      #razaoSocial="ngModel" required>
+
+    <app-message [control]="razaoSocial" error="required"
+        text="Informe a razão social"></app-message>
+  </div>
+
+  <div class="ui-g-12 ui-md-3 ui-fluid" >
+    <label>Telefone</label>
+    <input pInputText type="text" name="telefone"
+      [(ngModel)]="pessoa.juridica.telefone">
+  </div>
+
+  <div class="ui-g-12 ui-md-4 ui-fluid" >
+    <label>Cnpj</label>
+    <input pInputText type="text" name="cnpj"
+      [(ngModel)]="pessoa.juridica.cnpj">
+  </div>
+
+  <div class="ui-g-12 ui-md-4 ui-fluid" >
+    <label>Inscrição Estadual</label>
+    <input pInputText type="text" name="inscricaoEstadual"
+      [(ngModel)]="pessoa.juridica.inscricaoEstadual">
+  </div>
+
+  <div class="ui-g-12 ui-md-4 ui-fluid" >
+    <label>Website</label>
+    <input pInputText type="text" name="website"
+      [(ngModel)]="pessoa.juridica.website">
+  </div>
+</form>

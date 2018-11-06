@@ -5,9 +5,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { MessageService } from 'primeng/components/common/messageservice';
 
-import { Pessoa, Contato } from './../../core/model';
+import { Pessoa} from './../../core/model';
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-pessoa-cadastro',
@@ -20,6 +21,8 @@ export class PessoaCadastroComponent implements OnInit {
   estados: any[];
   cidades: any[];
   estadoSelecionado: number;
+  tipoPessoa: string;
+  resetForm = false;
 
   constructor(
     private pessoaService: PessoaService,
@@ -32,6 +35,7 @@ export class PessoaCadastroComponent implements OnInit {
 
   ngOnInit() {
     const codigoPessoa = this.route.snapshot.params['codigo'];
+    const tipoPessoa   = this.route.snapshot.params['tipo'];
 
     this.title.setTitle('Nova pessoa');
 
@@ -40,6 +44,22 @@ export class PessoaCadastroComponent implements OnInit {
     if (codigoPessoa) {
       this.carregarPessoa(codigoPessoa);
     }
+
+    if (tipoPessoa) {
+      this.tipoPessoa = tipoPessoa;
+    }
+  }
+
+  pessoaFisica(): boolean {
+    return this.tipoPessoa === 'F';
+  }
+
+  invalido(form: FormControl): boolean {
+    const invalido =
+      (this.tipoPessoa === 'F' && (!this.pessoa.fisica.dataNascimento || !this.pessoa.fisica.sexo)) ||
+      (this.tipoPessoa === 'J' && (!this.pessoa.juridica.razaoSocial));
+
+    return form.invalid || invalido;
   }
 
   carregarEstados() {
@@ -73,6 +93,8 @@ export class PessoaCadastroComponent implements OnInit {
       .then(pessoa => {
         this.pessoa = pessoa;
 
+        this.tipoPessoa = this.pessoa.tipo;
+
         this.estadoSelecionado = (this.pessoa.endereco.cidade) ?
             this.pessoa.endereco.cidade.estado.codigo : null;
 
@@ -94,12 +116,21 @@ export class PessoaCadastroComponent implements OnInit {
   }
 
   adicionarPessoa(form: FormControl) {
+    let myDate;
+    myDate = new Date();
+    myDate = formatDate(myDate, 'yyyy-MM-dd', 'pt-BR');
+
+    console.log(myDate);
+
     this.pessoa.ativo = true;
+    this.pessoa.tipo  = this.tipoPessoa;
+    this.pessoa.dataCadastro = myDate;
 
     this.pessoaService.adicionar(this.pessoa)
       .then(() => {
         this.messageService.add({ severity: 'success', detail: 'Pessoa adicionada com sucesso!'});
 
+        this.resetForm = true;
         form.reset();
         this.pessoa = new Pessoa();
       })
