@@ -25,6 +25,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 import { NaoAutorizadoComponent } from './nao-autorizado.component';
 import { GlobalHttp } from 'app/seguranca/global-http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from 'app/seguranca/auth.interceptor';
 
 registerLocaleData(localePt);
 
@@ -64,7 +66,12 @@ registerLocaleData(localePt);
     MessageService,
     JwtHelperService,
     Title,
-    { provide: LOCALE_ID, useValue: 'pt' }
+    { provide: LOCALE_ID, useValue: 'pt' },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ]
 })
 export class CoreModule { }
