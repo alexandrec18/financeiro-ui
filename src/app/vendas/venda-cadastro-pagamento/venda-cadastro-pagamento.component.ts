@@ -141,7 +141,6 @@ export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
     this.prepararNovaVendaPagamento();
     this.vendaFormaPagamento.formaPagamento = tipo;
     this.formHeader = this.descricaoPagamento(tipo);
-    console.log(this.vendaFormaPagamento);
   }
 
   calclularTotaisPorPagamento() {
@@ -156,8 +155,6 @@ export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
   calcularTotais() {
     this.totalSaldo = 0;
     this.totalValorTotal = 0;
-
-    console.log('saldo ' + this.vendaFormaPagamentos);
 
     for (let index = 0; index < this.vendaFormaPagamentos.length; index++) {
       this.totalValorTotal  += this.vendaFormaPagamentos[index].valorTotal;

@@ -1,3 +1,4 @@
+import { Moeda } from './../../core/model';
 import { VendaService } from 'app/vendas/venda.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { MoedaService } from './../../moedas/moeda.service';
@@ -25,7 +26,8 @@ export class VendaCadastroProdutoValoresComponent implements OnInit {
     this.carregarMoeda();
     this.vendaService.emitirPassageiroValores.subscribe(
       valoresPassageiros => {
-        this.calcularTotais(valoresPassageiros)
+        this.calcularTotais(valoresPassageiros),
+        this.atualizarMoeda(valoresPassageiros)
       }
     );
   }
@@ -33,9 +35,19 @@ export class VendaCadastroProdutoValoresComponent implements OnInit {
   carregarMoeda() {
     this.moedaService.listarTodas()
     .then(moedas => {
-      this.moedas = moedas.map(a => ({label: a.sigla, value: a.codigo}))
+      this.moedas = moedas.map(a => ({label: a.sigla, value: a.codigo})),
+      this.moedaDefault(moedas)
     })
     .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  moedaDefault(moedas: Moeda[]) {
+    for (const moeda of moedas) {
+      if (moeda.sigla === 'BRL' && this.valores.codigoMoeda.codigo === undefined) {
+        this.valores.codigoMoeda.codigo = moeda.codigo;
+        break;
+      }
+    }
   }
 
   carregarMoedaPassageiro(codigo) {
@@ -60,7 +72,9 @@ export class VendaCadastroProdutoValoresComponent implements OnInit {
       this.valores.totalProduto    += valoresPassageiros.vendaProdutoPassageiro[i].valorProduto;
       this.valores.totalProdutoBrl += valoresPassageiros.vendaProdutoPassageiro[i].valorProdutoBrl;
     }
+  }
 
+  atualizarMoeda(valoresPassageiros) {
     for (let i = 0; i < valoresPassageiros.vendaProdutoPassageiro.length; i++) {
       this.valores.cambioValor = valoresPassageiros.vendaProdutoPassageiro[i].cambioValor;
       this.carregarMoedaPassageiro(

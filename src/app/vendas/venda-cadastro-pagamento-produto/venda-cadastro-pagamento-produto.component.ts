@@ -21,7 +21,6 @@ export class VendaCadastroPagamentoProdutoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.carregarProdutos();
   }
 
   descricaoProduto(produto) {
@@ -41,7 +40,6 @@ export class VendaCadastroPagamentoProdutoComponent implements OnInit {
     this.exibindoFormularioVendaFormaPagamentoProduto = true;
     this.vendaFormaPagamentoProduto = new VendaFormaPagamentoProduto();
     this.vendaFormaPagamentoProdutoIndex = this.vendaFormaPagamentoProdutos.length;
-    console.log(this.vendaFormaPagamentoProduto);
   }
 
   prepararEdicaoFormaPagamentoProduto(vendaFormaPagamentoProduto: VendaFormaPagamentoProduto, index: number) {
@@ -55,7 +53,6 @@ export class VendaCadastroPagamentoProdutoComponent implements OnInit {
       this.clonarFormaPagamentoProduto(this.vendaFormaPagamentoProduto);
     this.exibindoFormularioVendaFormaPagamentoProduto = false;
     frm.reset(frm.value);
-    console.log(this.vendaFormaPagamentoProduto);
   }
 
   removerFormaPagamentoProduto(index: number) {
@@ -69,9 +66,5 @@ export class VendaCadastroPagamentoProdutoComponent implements OnInit {
 
   get editando() {
     return this.vendaFormaPagamentoProduto && this.vendaFormaPagamentoProduto.codigo
-  }
-
-  carregarProdutos() {
-    console.log(this.produtos);
   }
 }

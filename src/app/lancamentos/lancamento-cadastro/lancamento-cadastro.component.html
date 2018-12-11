@@ -33,12 +33,10 @@
         <label>Descrição</label>
         <input pInputText type="text" name="descricao"
           [(ngModel)]="lancamento.descricao"
-          #descricao="ngModel" required minlength="5">
+          #descricao="ngModel" required>
 
         <app-message [control]="descricao" error="required"
           text="Informe a descrição"></app-message>
-        <app-message [control]="descricao" error="minlength"
-          text="Mínimo de {{ descricao.errors?.minlength?.requiredLength }} caracteres"></app-message>
       </div>
 
       <div class="ui-g-12 ui-md-3 ui-fluid">

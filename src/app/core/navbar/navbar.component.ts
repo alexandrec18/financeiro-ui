@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { MenuItem } from 'primeng/api';
 
 import { LogoutService } from './../../seguranca/logout.service';
 import { AuthService } from './../../seguranca/auth.service';
 import { ErrorHandlerService } from '../error-handler.service';
-import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-navbar',
@@ -28,38 +29,38 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Dashboard',
         routerLink: '/dashboard',
-        disabled: !this.auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')
+        visible: this.auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')
       },
       {
           label: 'Cadastros',
           items: [
               {label: 'Acomodações', routerLink: '/acomodacoes',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_ACOMODACAO')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_ACOMODACAO')},
               {label: 'Empresas', routerLink: '/empresas',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_EMPRESA')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_EMPRESA')},
               {label: 'Categorias', routerLink: '/categorias',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_CATEGORIA')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_CATEGORIA')},
               {label: 'Moedas', routerLink: '/moedas',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_MOEDA')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_MOEDA')},
               {label: 'Pacotes', routerLink: '/pacotes',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_PACOTE')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_PACOTE')},
               {label: 'Pessoas', routerLink: '/pessoas',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_PESSOA')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_PESSOA')},
               {label: 'Regimes', routerLink: '/regimes',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_REGIME')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_REGIME')},
               {label: 'Tipos de Acomodações', routerLink: '/tipo-acomodacoes',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_TIPO_ACOMODACAO')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_TIPO_ACOMODACAO')},
               {label: 'Transportes', routerLink: '/transportes',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_TRANSPORTE')},
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_TRANSPORTE')},
               {label: 'Usuários', routerLink: '/usuarios',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_USUARIO')}
+                visible: this.auth.temPermissao('ROLE_PESQUISAR_USUARIO')}
           ]
       },
       {
           label: 'Financeiro',
           items: [
               {label: 'Lançamentos', routerLink: '/lancamentos',
-                disabled: !this.auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')}
+               visible: this.auth.temPermissao('ROLE_PESQUISAR_LANCAMENTO')}
           ]
       },
       {
@@ -78,7 +79,7 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Vendas',
         routerLink: '/vendas',
-        disabled: !this.auth.temPermissao('ROLE_PESQUISAR_VENDA')
+        visible: this.auth.temPermissao('ROLE_PESQUISAR_VENDA')
       },
       {
           label: 'Sair',

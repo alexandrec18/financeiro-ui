@@ -138,8 +138,6 @@ export class PessoaCadastroComponent implements OnInit {
     myDate = new Date();
     myDate = formatDate(myDate, 'yyyy-MM-dd', 'pt-BR');
 
-    console.log(myDate);
-
     this.pessoa.ativo = true;
     this.pessoa.tipo  = this.tipoPessoa;
     this.pessoa.dataCadastro = myDate;

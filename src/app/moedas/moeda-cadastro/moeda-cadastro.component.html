@@ -10,13 +10,10 @@
         <label>Nome</label>
         <input pInputText type="text" name="nome"
           [(ngModel)]="moeda.nome" #nome="ngModel"
-          required minlength="4">
+          required>
 
         <app-message [control]="nome" error="required"
           text="Informe o nome.">
-        </app-message>
-        <app-message [control]="nome" error="minlength"
-          text="Mínimo de {{nome.errors?.minlength?.requiredLength}} caracteres.">
         </app-message>
       </div>
 
@@ -38,13 +35,10 @@
         <label>Simbolo</label>
         <input pInputText type="text" name="simbolo"
           [(ngModel)]="moeda.simbolo" #simbolo="ngModel"
-          required maxlength="5">
+          required>
 
         <app-message [control]="simbolo" error="required"
           text="Informe o simbolo.">
-        </app-message>
-        <app-message [control]="simbolo" error="maxlength"
-          text="Máximo de {{simbolo.errors?.minlength?.requiredLength}} caracteres permitidos.">
         </app-message>
       </div>
 

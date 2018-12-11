@@ -10,13 +10,10 @@
         <label>Nome</label>
         <input pInputText type="text" name="nome"
           [(ngModel)]="categoria.nome" #nome="ngModel"
-          required minlength="5">
+          required>
 
         <app-message [control]="nome" error="required"
           text="Informe o nome.">
-        </app-message>
-        <app-message [control]="nome" error="minlength"
-          text="Mínimo de {{nome.errors?.minlength?.requiredLength}} caracteres.">
         </app-message>
       </div>
 

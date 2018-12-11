@@ -90,11 +90,9 @@ export class VendaCadastroProdutoHospedagemComponent implements OnInit, OnChange
 
   aoSalvarPassageiro() {
     this.vendaService.eventPassageiroValores(this.vendaProduto);
-    console.log(this.vendaProduto);
   }
 
   confirmarVendaProduto(frm: FormControl) {
-    console.log(this.vendaProduto);
     this.emiterConfirmarProduto.emit('DH');
     frm.reset(frm.value);
   }

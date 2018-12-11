@@ -63,11 +63,9 @@ export class VendaCadastroProdutoAereaComponent implements OnInit, OnChanges {
 
   aoSalvarPassageiro() {
     this.vendaService.eventPassageiroValores(this.vendaProduto);
-    console.log(this.vendaProduto);
   }
 
   confirmarVendaProduto(frm: FormControl) {
-    console.log(this.vendaProduto);
     this.informarPeriodo();
     this.emiterConfirmarProduto.emit('PA');
     frm.reset(frm.value);

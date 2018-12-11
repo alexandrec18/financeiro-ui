@@ -114,7 +114,6 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
     this.vendaProduto.produto = 'PA';
     this.desabilitandoProdutos();
     this.exibirPassagemAerea = true;
-    console.log(this.vendaProduto);
   }
 
   pacoteTuristico() {
@@ -125,7 +124,6 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
   }
 
   aoConfirmarProduto(produto) {
-    console.log(this.vendaProduto);
     this.confirmarVendaProduto();
     this.vendaService.eventCalcularFormaPagamentoSaldo();
     this.desabilitandoProdutos();

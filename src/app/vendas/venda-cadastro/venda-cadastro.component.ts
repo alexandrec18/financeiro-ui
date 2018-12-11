@@ -82,7 +82,6 @@ export class VendaCadastroComponent implements OnInit {
         this.atualizarTituloEdicao();
         this.iniciarVariaveis();
         this.iniciarVerificacoes();
-        console.log(this.venda);
       })
       .catch(erro => this.errorHandler.handle(erro));
   }
@@ -98,7 +97,7 @@ export class VendaCadastroComponent implements OnInit {
   }
 
   adicionarVenda(form: FormControl) {
-    console.log(this.venda);
+
     if (!this.venda.vendedor.codigo) {
       this.venda.vendedor.codigo = this.auth.jwtPayload.codigo;
     }
@@ -115,7 +114,6 @@ export class VendaCadastroComponent implements OnInit {
   }
 
   atualizarVenda(form: FormControl) {
-    console.log(this.venda);
     this.isReady = false;
 
     this.calcularTotaisVenda();

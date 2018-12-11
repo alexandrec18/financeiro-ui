@@ -83,6 +83,27 @@
         required></p-calendar>
     </div>
 
+    <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="vendaFormaPagamento.formaPagamento === 'CCF'">
+      <label>Parcelas</label>
+      <input pInputText type="number" name="parcelas"
+        [(ngModel)]="vendaFormaPagamento.parcelas"
+        required>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="vendaFormaPagamento.formaPagamento === 'CCF'">
+      <label>Autorização</label>
+      <input pInputText type="text" name="autorizacao"
+        [(ngModel)]="vendaFormaPagamento.autorizacao"
+        required>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="vendaFormaPagamento.formaPagamento === 'CCF'">
+      <label>Cartão</label>
+      <input pInputText type="text" name="cartao"
+        [(ngModel)]="vendaFormaPagamento.numero"
+        required>
+    </div>
+
     <div class="ui-g-12">
       <button pButton type="submit" label="Confirmar"
         [disabled]="frmFormaPagamento.invalid">

@@ -1,3 +1,5 @@
+import { AuthService } from './../seguranca/auth.service';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 
@@ -12,17 +14,30 @@ export class DashboardService {
 
   lancamentosUrl: string;
 
-  constructor(private http: GlobalHttp) {
+  constructor(
+    private http: GlobalHttp,
+    private auth: AuthService
+  ) {
     this.lancamentosUrl = `${environment.apiUrl}/lancamentos`;
   }
 
   lancamentosPorCategoria(): Promise<Array<any>> {
-    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-categoria`)
+    let params = new HttpParams();
+
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
+
+    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-categoria`,
+        { params })
       .toPromise();
   }
 
   lancamentosPorDia(): Promise<Array<any>> {
-    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-dia`)
+    let params = new HttpParams();
+
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
+
+    return this.http.get<Array<any>>(`${this.lancamentosUrl}/estatisticas/por-dia`,
+        { params })
       .toPromise()
       .then(response => {
         const dados = response;

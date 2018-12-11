@@ -111,7 +111,7 @@ export class LancamentoCadastroComponent implements OnInit {
 
   novo(form: FormControl) {
     this.lancamento = new Lancamento();
-    console.log(this.lancamento);
+
     form.reset(this.lancamento);
 
     this.router.navigate(['/lancamentos/novo'])

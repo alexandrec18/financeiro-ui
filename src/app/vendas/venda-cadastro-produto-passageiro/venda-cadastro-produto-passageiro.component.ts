@@ -63,15 +63,12 @@ export class VendaCadastroProdutoPassageiroComponent implements OnInit {
   }
 
   confirmarPassageiro(frm: FormControl) {
-    console.log(frm);
-    console.log(this.passageiro);
     this.replicarValor();
     this.passageiros[this.passageiroIndex] = this.clonarPassageiro(this.passageiro);
     this.calcularTotais();
     this.aoSalvarPassageiro();
     this.exibindoFormularioPassageiro = false;
     frm.reset(frm.value);
-    console.log(this.passageiro);
   }
 
   removerPassageiro(index: number) {
@@ -162,7 +159,6 @@ export class VendaCadastroProdutoPassageiroComponent implements OnInit {
   }
 
   aoSalvarPassageiro() {
-    console.log(this.passageiro);
     this.salvarPassageiro.emit();
   };
 
