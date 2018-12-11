@@ -1,0 +1,117 @@
+<div *ngIf="!isReady" style="width: 100%; padding-top: 50px; text-align: center">
+  <p-progressSpinner></p-progressSpinner>
+  Loading...
+</div>
+
+<div class="container" *ngIf="isReady">
+  <form #f="ngForm" autocomplete="off" (ngSubmit)="salvar(f)">
+    <p-tabView>
+
+      <!-- Detalhe -->
+      <p-tabPanel header="Detalhe" leftIcon="pi pi-calendar">
+
+          <div class="ui-g">
+
+              <div class="ui-g-12">
+                <h1> {{ editando ? 'Edição de' : 'Nova' }} Venda</h1>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                <label>Empresa</label>
+
+                <p-dropdown name="empresa" [options]="empresas"
+                  [autoWidth]="false" [(ngModel)]="venda.empresa.codigo"
+                  autofocus>
+                </p-dropdown>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                <label>Vendedor</label>
+
+                <p-dropdown name="vendedor" [options]="vendedores"
+                  [autoWidth]="false" [(ngModel)]="venda.vendedor.codigo">
+                </p-dropdown>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                <label>Período</label>
+
+                <p-calendar name="periodoInicial" dateFormat="dd/mm/yy"
+                  [inline]="false" [readonlyInput]="false" [showIcon]="false"
+                  [(ngModel)]="dates" selectionMode="multiple" [disabled]="true"></p-calendar>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                <label>Data Venda</label>
+
+                <p-calendar name="dataVenda" dateFormat="dd/mm/yy"
+                  [inline]="false" [readonlyInput]="false" [showIcon]="true"
+                  [(ngModel)]="venda.dataVenda"
+                  #dataVenda="ngModel" required></p-calendar>
+
+                <app-message [control]="dataVenda" error="required"
+                  text="Informe a data da venda!"></app-message>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                <label>Situação</label>
+
+                <input pInputText name="situacao" [(ngModel)]="situacao"
+                    type="text" [disabled]="true"/>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                <label>Intermediário</label>
+
+                <p-dropdown name="intermediario" [options]="intermediarios"
+                  placeholder="Selecione..." [autoWidth]="false" [filter]="true"
+                  [(ngModel)]="venda.intermediario.codigo" [showClear]="true">
+                </p-dropdown>
+              </div>
+
+              <div class="ui-g-12 ui-md-6 ui-fluid">
+                <label>Pagante</label>
+
+                <p-dropdown name="pagante" [options]="pagantes"
+                  placeholder="Selecione..." [autoWidth]="false" [filter]="true"
+                  [(ngModel)]="venda.pagante.codigo" required>
+                </p-dropdown>
+              </div>
+
+              <div class="ui-g-12 ui-md-6 ui-fluid">
+                <label>Solicitante</label>
+
+                <p-dropdown name="solicitante" [options]="solicitantes"
+                  placeholder="Selecione..." [autoWidth]="false" [filter]="true"
+                  [(ngModel)]="venda.solicitante.codigo" [showClear]="true">
+                </p-dropdown>
+              </div>
+          </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Produto/Pagamento" leftIcon="pi pi-inbox">
+        <div class="ui-g">
+          <div class="ui-g-12">
+              <app-venda-cadastro-produto [vendaProdutos]="venda.vendaProduto"
+                [vendaFormaPagamentos]="venda.vendaFormaPagamento">
+              </app-venda-cadastro-produto>
+          </div>
+
+          <div class="ui-g-12">
+            <app-venda-cadastro-pagamento [vendaFormaPagamentos]="venda.vendaFormaPagamento"
+              [vendaProdutos]="venda.vendaProduto" *ngIf="venda.vendaProduto.length >= 1">
+            </app-venda-cadastro-pagamento>
+          </div>
+        </div>
+      </p-tabPanel>
+
+    </p-tabView>
+
+    <div class="ui-g-12" >
+        <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
+        <button pButton type="button" label="Novo" class="ui-button-info"
+          (click)="novo(f)"></button>
+        <a routerLink="/vendas">Voltar para a pesquisa</a>
+      </div>
+  </form>
+</div>

@@ -48,3 +48,32 @@
 .navbar-menuitem.ativo {
   background-color: #494541
 }
+
+
+
+
+/deep/ .menucus ul li {
+  padding-left: 10px;
+  background-color: #3a3633;
+}
+
+/deep/ .menucus div{
+  background-color: #3a3633;
+  border-top: 0px solid #525151;
+  border-bottom: 0px solid #525151;
+  border-right: 0px solid #525151;
+  border-left: 0px solid #525151;
+}
+
+/deep/ .menucus a {
+  color: white;
+}
+
+.menucus .ui-widget-content {
+  border: 1px solid #525151;
+}
+
+/deep/ .ui-panelmenu .ui-panelmenu-content .ui-menuitem-link {
+  color: white;
+}
+

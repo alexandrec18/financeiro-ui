@@ -68,3 +68,51 @@ label {
 .col-status-header {
   width: 90px;
 }
+
+.col-doc {
+  width: 120px;
+}
+
+.col-doc-header {
+  width: 120px;
+}
+
+.col-prod {
+  width: 160px;
+}
+
+.col-prod-header {
+  width: 160px;
+}
+
+.col-aero {
+  width: 100px;
+  text-align: center;
+}
+
+.col-aero-header {
+  width: 100px;
+}
+
+.col-valor-pag {
+  width: 200px;
+  text-align: right
+}
+
+.col-valor-pag-header {
+  width: 200px;
+}
+
+.col-numero {
+  width: 120px;
+}
+
+.col-numero-header {
+  width: 120px;
+}
+
+.label-ate {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+

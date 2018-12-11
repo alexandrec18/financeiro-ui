@@ -1,0 +1,112 @@
+<p-dialog [header]="editando ? 'Edição de Aéreo' : 'Novo Aéreo'"
+  modal="modal" [(visible)]="exibindoFormularioVendaProduto"
+  *ngIf="vendaProduto" [contentStyle]="{'max-height': '590px', 'max-width': '1100px'}"
+  [responsive]="true" [positionTop]="5">
+
+  <form #frmProduto="ngForm" (ngSubmit)="confirmarVendaProduto(frmProduto)">
+
+    <p-tabView>
+
+      <p-tabPanel header="Detalhe">
+
+        <div class="ui-g">
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Companhia Aérea</label>
+
+            <p-dropdown name="fornecedor" [options]="fornecedores"
+              placeholder="Selecione..." [autoWidth]="false"
+              [filter]="true" [(ngModel)]="vendaProduto.fornecedor.codigo"
+              #vendaProdutoFornecedor="ngModel" required>
+            </p-dropdown>
+
+            <app-message [control]="vendaProdutoFornecedor" error="required"
+              text="Informe o fornecedor"></app-message>
+          </div>
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Destino</label>
+
+            <p-dropdown name="destino" [options]="destinos"
+              placeholder="Selecione..." [autoWidth]="false"
+              [(ngModel)]="vendaProduto.destino"
+              #vendaProdutoDestino="ngModel" required>
+            </p-dropdown>
+
+            <app-message [control]="vendaProdutoDestino" error="required"
+              text="Informe o Destino"></app-message>
+          </div>
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Representante</label>
+
+            <p-dropdown name="representante" [options]="representantes"
+              placeholder="Selecione..." [autoWidth]="false"
+              [filter]="true" [(ngModel)]="vendaProduto.representante.codigo"
+              [showClear]="true">
+            </p-dropdown>
+          </div>
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Localizador</label>
+
+            <input pInputText type="text" name="localizador"
+              [(ngModel)]="vendaProduto.documento"/>
+          </div>
+
+
+          <div class="ui-g-12 ui-md-4 ui-fluid">
+            <label>Número NF</label>
+
+            <input pInputText type="text" name="numeroNf"
+              [(ngModel)]="vendaProduto.numeroNf"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-4 ui-fluid">
+            <label>Número Externo</label>
+
+            <input pInputText type="text" name="numeroExterno"
+              [(ngModel)]="vendaProduto.numeroExterno"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-4 ui-fluid">
+            <label>Recibo Operadora</label>
+
+            <input pInputText type="text" name="reciboOperadora"
+              [(ngModel)]="vendaProduto.reciboOperadora"/>
+          </div>
+
+          <div class="ui-g-12 ui-fluid">
+            <label>Observação</label>
+
+            <textarea pInputTextarea rows="3" name="observacao"
+              [(ngModel)]="vendaProduto.observacao"></textarea>
+          </div>
+
+        </div>
+
+      </p-tabPanel>
+
+      <p-tabPanel header="Trecho/Passageiros">
+        <app-venda-cadastro-produto-trecho [trechos]="vendaProduto.vendaProdutoTrecho">
+        </app-venda-cadastro-produto-trecho>
+
+        <app-venda-cadastro-produto-passageiro [passageiros]="vendaProduto.vendaProdutoPassageiro"
+          (salvarPassageiro)="aoSalvarPassageiro()">
+        </app-venda-cadastro-produto-passageiro>
+
+        <app-venda-cadastro-produto-valores [valores]="vendaProduto.valoresVendaProduto">
+        </app-venda-cadastro-produto-valores>
+      </p-tabPanel>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Confirmar"
+          [disabled]="frmProduto.invalid">
+        </button>
+      </div>
+
+    </p-tabView>
+
+  </form>
+
+</p-dialog>

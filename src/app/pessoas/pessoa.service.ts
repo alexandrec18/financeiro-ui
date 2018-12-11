@@ -44,7 +44,7 @@ export class PessoaService {
 
     params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
-    return this.http.get<any>(`${this.pessoasUrl}`,
+    return this.http.get<any>(`${this.pessoasUrl}?resumo`,
         { params })
       .toPromise()
       .then(response => {
@@ -64,7 +64,7 @@ export class PessoaService {
 
     params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
-    return this.http.get<any>(this.pessoasUrl,
+    return this.http.get<any>(`${this.pessoasUrl}?resumo`,
       { params })
       .toPromise()
       .then(response => response.content);

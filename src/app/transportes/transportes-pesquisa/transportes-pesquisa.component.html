@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()">
+
+      <div class="ui-g-12">
+        <h1>Transportes</h1>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+          <label>Nome</label>
+          <input pInputText type="text" name="nome"
+            [(ngModel)]="filtro.nome">
+      </div>
+
+      <div class="ui-g-12">
+          <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="ui-g">
+
+    <div class="ui-g-12">
+
+      <p-table [value]="transportes" [responsive]="true"
+        [paginator]="true" [rows]="filtro.itensPorPagina"
+        [lazy]="true" [totalRecords]="totalRegistros"
+        (onLazyLoad)="aoMudarPagina($event)"
+        #tabela>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nome</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-transporte>
+          <tr>
+            <td>{{ transporte.nome }}</td>
+            <td class="col-acoes">
+              <a pButton icon="fa fa-pencil"
+                pTooltip="Editar" tooltipPosition="top"
+                [routerLink]="['/transportes', transporte.codigo]"></a>
+
+              <button pButton icon="fa fa-trash"
+                pTooltip="Excluir" tooltipPosition="top"
+                (click)="confirmarExclusao(transporte)"></button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="2">
+              Nenhum transporte encontrado!
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+
+    </div>
+
+    <div class="ui-g-12">
+      <a pButton label="Novo transporte" routerLink="/transportes/novo"></a>
+    </div>
+
+  </div>
+
+</div>
+

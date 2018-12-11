@@ -9,6 +9,7 @@ import { Pessoa} from './../../core/model';
 import { PessoaService } from '../pessoa.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { formatDate } from '@angular/common';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-pessoa-cadastro',
@@ -48,6 +49,23 @@ export class PessoaCadastroComponent implements OnInit {
     if (tipoPessoa) {
       this.tipoPessoa = tipoPessoa;
     }
+  }
+
+  getItems(form: FormControl): MenuItem[] {
+    return [
+      {label: 'Física', command: () => {
+        this.pessoa = new Pessoa();
+        this.tipoPessoa = 'F';
+        form.reset(this.pessoa);
+        this.router.navigate(['/pessoas/nova', 'F'])
+      }},
+      {label: 'Jurídica',  command: () => {
+        this.pessoa = new Pessoa();
+        this.tipoPessoa = 'J';
+        form.reset(this.pessoa);
+        this.router.navigate(['/pessoas/nova', 'J'])
+      }}
+    ];
   }
 
   pessoaFisica(): boolean {
@@ -146,13 +164,6 @@ export class PessoaCadastroComponent implements OnInit {
         this.atualizarTituloEdicao();
       })
       .catch(erro => this.errorHandler.handle(erro));
-  }
-
-  novo(form: FormControl) {
-    this.pessoa = new Pessoa();
-    form.reset(this.pessoa);
-
-    this.router.navigate(['/pessoas/nova'])
   }
 
   atualizarTituloEdicao() {

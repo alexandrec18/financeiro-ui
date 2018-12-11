@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="ui-g">
+
+    <form autocomplete="off" (ngSubmit)="pesquisar()" style="width: 100%">
+
+      <div class="ui-g-12">
+        <h1>Vendas</h1>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Pagante</label>
+
+        <p-dropdown placeholder="Selecione..." [autoWidth]="false"
+          [options]="pagantes" [(ngModel)]="filtro.pagante" name="pagante"
+          [filter]="true" editable="true">
+        </p-dropdown>
+      </div>
+
+      <div class="ui-g-12 ui-md-2 ui-fluid">
+        <label>Situação</label>
+
+        <p-dropdown placeholder="Selecione..." [autoWidth]="false"
+          [options]="situacao" [(ngModel)]="filtro.situacao" name="situacao">
+        </p-dropdown>
+      </div>
+
+      <div class="ui-g-12">
+        <label style="display: block">Periodo</label>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }"
+          name="periodoInicial" [(ngModel)]="filtro.periodoInicial"></p-calendar>
+
+        <label class="label-ate">até</label>
+        <p-calendar dateFormat="dd/mm/yy" [inputStyle]="{ width: '95px' }"
+          name="periodoFinal" [(ngModel)]="filtro.periodoFinal"></p-calendar>
+      </div>
+
+      <div class="ui-g-12">
+          <button pButton type="submit" label="Pesquisar"></button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="ui-g">
+
+    <div class="ui-g-12">
+
+      <p-table [value]="vendas" [responsive]="true"
+        [paginator]="true" [rows]="filtro.itensPorPagina"
+        [lazy]="true" [totalRecords]="totalRegistros"
+        (onLazyLoad)="aoMudarPagina($event)"
+        #tabela>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="col-numero-header">Número</th>
+            <th class="col-data-header">Data Venda</th>
+            <th>Pagante</th>
+            <th class="col-valor-venda-header">Total Produtos</th>
+            <th class="col-valor-venda-header">Total Final</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-venda>
+          <tr>
+            <td class="col-numero">{{ venda.numero }}</td>
+            <td class="col-data">{{ venda.dataVenda }}</td>
+            <td>{{ venda.pagante }}</td>
+            <td class="col-valor-venda">{{ venda.totalProdutos | number:'1.2-2' }}</td>
+            <td class="col-valor-venda">{{ venda.totalFinal | number:'1.2-2' }}</td>
+            <td class="col-acoes">
+              <a pButton icon="fa fa-pencil"
+                pTooltip="Editar" tooltipPosition="top"
+                [routerLink]="['/vendas', venda.codigo]"></a>
+
+              <button pButton icon="fa fa-trash"
+                pTooltip="Excluir" tooltipPosition="top"
+                (click)="confirmarExclusao(venda)"></button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">
+              Nenhuma venda encontrada!
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+
+    </div>
+
+    <div class="ui-g-12">
+      <a pButton label="Nova Venda" routerLink="/vendas/nova"></a>
+    </div>
+
+  </div>
+
+</div>
+

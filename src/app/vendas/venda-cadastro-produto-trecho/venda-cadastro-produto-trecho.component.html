@@ -1,0 +1,147 @@
+
+  <div class="ui-g">
+
+      <p-table [value]="trechos" [responsive]="true" [style]="{'padding-bottom':'5px'}">
+          <ng-template pTemplate="caption">
+              <div class="ui-helper-clearfix">
+                  <span style="float:left; padding: 3px;">Trecho</span>
+                  <button pButton style="float:right"  label="Novo" icon="fa fa-plus" type="button" class="ui-button-secondary" (click)="prepararNovoTrecho()"></button>
+              </div>
+          </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Cia. Aérea</th>
+            <th>Vôo</th>
+            <th class="col-aero-header">Origem</th>
+            <th class="col-data-header">Saída</th>
+            <th class="col-aero-header">Destino</th>
+            <th class="col-data-header">Chegada</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-trecho
+          let-rowIndex="rowIndex">
+          <tr>
+            <td>{{ trecho.ciaAerea }}</td>
+            <td>{{ trecho.voo }}</td>
+            <td class="col-aero">{{ trecho.aeroportoOrigem?.iata }}</td>
+            <td class="col-data">{{ trecho.dataSaida | date:"dd/MM/yyyy"}}</td>
+            <td class="col-aero">{{ trecho.aeroportoDestino?.iata }}</td>
+            <td class="col-data">{{ trecho.dataChegada | date:"dd/MM/yyyy" }}</td>
+            <td class="col-acoes">
+              <button pButton icon="fa fa-pencil" type="button"
+                pTooTip="Editar" tooltipPosition="top"
+                (click)="prepararEdicaoTrecho(trecho, rowIndex)">
+              </button>
+
+              <button pButton icon="fa fa-trash" type="button"
+                pTooTip="Excluir" tooltipPosition="top"
+                (click)="removerTrecho(rowIndex)">
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">
+              Nenhum trecho cadastrado!
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+  </div>
+
+
+
+<p-dialog [header]="editando ? 'Edição Trecho' : 'Novo Trecho'"
+  [(visible)]="exibindoFormularioTrecho" modal="modal" *ngIf="trecho" appendTo="body">
+
+  <form #frmTrecho="ngForm" autocomplete="off" (ngSubmit)="confirmarTrecho(frmTrecho)"
+    style="max-width: 400px;">
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Cia. Aérea</label>
+
+      <input pInputText type="text" name="ciaAerea"
+        required [(ngModel)]="trecho.ciaAerea" #trechoCiaAerea="ngModel">
+
+      <app-message [control]="trechoCiaAerea" error="required"
+        text="Informe a companhia aérea"></app-message>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Vôo</label>
+
+      <input pInputText type="text" name="voo"
+        required [(ngModel)]="trecho.voo">
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Classe</label>
+
+      <input pInputText type="text" name="classe"
+        required [(ngModel)]="trecho.classe">
+    </div>
+
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Origem</label>
+
+      <p-dropdown name="aeroportoOrigem" [options]="aeroportoOrigens"
+        placeholder="Selecione..." [autoWidth]="false"
+        [filter]="true" [(ngModel)]="trecho.aeroportoOrigem.codigo">
+      </p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Data Saída</label>
+
+      <p-calendar name="dataSaida" dateFormat="dd/mm/yy"
+        [inline]="false" [readonlyInput]="false" [showIcon]="true"
+        [(ngModel)]="trecho.dataSaida"></p-calendar>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Hora Saída</label>
+
+      <p-calendar name="horaSaida"
+        [inline]="false" [readonlyInput]="false" [showIcon]="true"
+        [timeOnly]="true" [(ngModel)]="trecho.horaSaida"></p-calendar>
+    </div>
+
+    <div class="ui-g-12 ui-fluid">
+      <label>Destino</label>
+
+      <p-dropdown name="aeroportoDestino" [options]="aeroportoDestinos"
+        placeholder="Selecione..." [autoWidth]="false"
+        [filter]="true" [(ngModel)]="trecho.aeroportoDestino.codigo">
+      </p-dropdown>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Data Chegada</label>
+
+      <p-calendar name="dataChegada" dateFormat="dd/mm/yy"
+        [inline]="false" [readonlyInput]="false" [showIcon]="true"
+        [(ngModel)]="trecho.dataChegada"></p-calendar>
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Hora Chegada</label>
+
+      <p-calendar name="horaChegada"
+        [inline]="false" [readonlyInput]="false" [showIcon]="true"
+        [timeOnly]="true" [(ngModel)]="trecho.horaChegada"></p-calendar>
+    </div>
+
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Confirmar"
+        [disabled]="frmTrecho.invalid">
+      </button>
+    </div>
+  </form>
+
+</p-dialog>

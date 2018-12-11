@@ -1,0 +1,162 @@
+<p-dialog [header]="editando ? 'Edição de Hospedagem' : 'Nova Hospedagem'"
+  *ngIf="vendaProduto" [contentStyle]="{'max-height': '590px', 'max-width': '1100px'}"
+  modal="modal" [responsive]="true" [positionTop]="5"
+  [(visible)]="exibindoFormularioVendaProduto">
+
+  <form #frmProduto="ngForm" (ngSubmit)="confirmarVendaProduto(frmProduto)">
+
+    <p-tabView>
+
+      <p-tabPanel header="Detalhe">
+
+        <div class="ui-g">
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Hotel</label>
+
+            <p-dropdown name="fornecedor" [options]="fornecedores"
+              placeholder="Selecione..." [autoWidth]="false"
+              [filter]="true" [(ngModel)]="vendaProduto.fornecedor.codigo"
+              #vendaProdutoFornecedor="ngModel" required>
+            </p-dropdown>
+
+            <app-message [control]="vendaProdutoFornecedor" error="required"
+              text="Informe o fornecedor"></app-message>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Check In</label>
+
+            <p-calendar name="dataInicio" dateFormat="dd/mm/yy"
+              [inline]="false" [readonlyInput]="false" [showIcon]="true"
+              [(ngModel)]="vendaProduto.dataInicio" required></p-calendar>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Hora Check In</label>
+
+            <p-calendar name="horaInicio"
+              [inline]="false" [readonlyInput]="false" [showIcon]="true"
+              [timeOnly]="true" [(ngModel)]="vendaProduto.horaInicio"></p-calendar>
+          </div>
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Representante</label>
+
+            <p-dropdown name="representante" [options]="representantes"
+              placeholder="Selecione..." [autoWidth]="false" [showClear]="true"
+              [filter]="true" [(ngModel)]="vendaProduto.representante.codigo">
+            </p-dropdown>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Check Out</label>
+
+            <p-calendar name="dataFim" dateFormat="dd/mm/yy"
+              [inline]="false" [readonlyInput]="false" [showIcon]="true"
+              [(ngModel)]="vendaProduto.dataFim" required></p-calendar>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Hora Check Out</label>
+
+            <p-calendar name="horaFim"
+              [inline]="false" [readonlyInput]="false" [showIcon]="true"
+              [timeOnly]="true" [(ngModel)]="vendaProduto.horaFim"></p-calendar>
+          </div>
+
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Reserva</label>
+
+            <input pInputText type="text" name="localizador"
+              [(ngModel)]="vendaProduto.documento"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Acomodação</label>
+
+            <p-dropdown name="acomodacao" [options]="acomodacoes"
+              placeholder="Selecione..." [autoWidth]="false" [showClear]="true"
+              [filter]="true" [(ngModel)]="vendaProduto.acomodacao.codigo">
+            </p-dropdown>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Tipo Acomodação</label>
+
+            <p-dropdown name="tipoAcomodacao" [options]="tipoAcomodacoes"
+              placeholder="Selecione..." [autoWidth]="false" [showClear]="true"
+              [filter]="true" [(ngModel)]="vendaProduto.tipoAcomodacao.codigo">
+            </p-dropdown>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid">
+            <label>Regime</label>
+
+            <p-dropdown name="regime" [options]="regimes"
+              placeholder="Selecione..." [autoWidth]="false" [showClear]="true"
+              [filter]="true" [(ngModel)]="vendaProduto.regime.codigo">
+            </p-dropdown>
+          </div>
+
+
+          <div class="ui-g-12 ui-md-4 ui-fluid">
+            <label>Número NF</label>
+
+            <input pInputText type="text" name="numeroNf"
+              [(ngModel)]="vendaProduto.numeroNf"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-4 ui-fluid">
+            <label>Número Externo</label>
+
+            <input pInputText type="text" name="numeroExterno"
+              [(ngModel)]="vendaProduto.numeroExterno"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-4 ui-fluid">
+            <label>Recibo Operadora</label>
+
+            <input pInputText type="text" name="reciboOperadora"
+              [(ngModel)]="vendaProduto.reciboOperadora"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Serviços Inclusos</label>
+
+            <textarea pInputTextarea rows="3" name="servicosInclusos"
+              [(ngModel)]="vendaProduto.servicosInclusos"></textarea>
+          </div>
+
+          <div class="ui-g-12 ui-md-6 ui-fluid">
+            <label>Observação</label>
+
+            <textarea pInputTextarea rows="3" name="observacao"
+              [(ngModel)]="vendaProduto.observacao"></textarea>
+          </div>
+
+        </div>
+
+      </p-tabPanel>
+
+      <p-tabPanel header="Passageiros">
+        <app-venda-cadastro-produto-passageiro [passageiros]="vendaProduto.vendaProdutoPassageiro"
+          (salvarPassageiro)="aoSalvarPassageiro()">
+        </app-venda-cadastro-produto-passageiro>
+
+        <app-venda-cadastro-produto-valores [valores]="vendaProduto.valoresVendaProduto">
+        </app-venda-cadastro-produto-valores>
+      </p-tabPanel>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Confirmar"
+          [disabled]="frmProduto.invalid">
+        </button>
+      </div>
+
+    </p-tabView>
+
+  </form>
+
+</p-dialog>

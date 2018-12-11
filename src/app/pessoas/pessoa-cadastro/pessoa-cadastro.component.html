@@ -7,14 +7,10 @@
           <div class="ui-g-12 ui-md-6 ui-fluid" >
             <label>Nome</label>
             <input pInputText type="text" name="nome"
-              [(ngModel)]="pessoa.nome" #nome="ngModel"
-              required minlength="5">
+              [(ngModel)]="pessoa.nome" #nome="ngModel" required>
 
             <app-message [control]="nome" error="required"
               text="Informe o nome">
-            </app-message>
-            <app-message [control]="nome" error="minlength"
-              text="Mínimo de {{nome.errors?.minlength?.requiredLength}} caracteres.">
             </app-message>
           </div>
 
@@ -132,8 +128,8 @@
 
       <div class="ui-g-12" >
         <button pButton type="submit" label="Salvar" [disabled]="invalido(f)"></button>
-        <button pButton type="button" label="Novo" class="ui-button-info"
-          (click)="novo(f)"></button>
+        <p-splitButton [style]="{'padding-right':'3px'}" label="Nova" [model]="getItems(f)"></p-splitButton>
+
         <a routerLink="/pessoas">Voltar para a pesquisa</a>
       </div>
     </div>

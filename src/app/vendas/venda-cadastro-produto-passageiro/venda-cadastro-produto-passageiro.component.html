@@ -1,0 +1,248 @@
+
+
+  <div class="ui-g">
+
+      <p-table [value]="passageiros" [responsive]="true" [style]="{'padding-bottom':'5px'}">
+
+          <ng-template pTemplate="caption">
+              <div class="ui-helper-clearfix">
+                  <span style="float:left; padding: 3px;">Passageiro</span>
+                  <button pButton style="float:right" label="Novo" icon="fa fa-plus"
+                    type="button" class="ui-button-secondary"
+                    (click)="prepararNovoPassageiro()"></button>
+              </div>
+          </ng-template>
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Nome</th>
+            <th >N. Emissão</th>
+            <th>Documento</th>
+            <th class="col-valor-header">Valor</th>
+            <th class="col-valor-header">Taxa</th>
+            <th class="col-valor-header">Outras Taxas</th>
+            <th class="col-valor-header">Taxa RAV</th>
+            <th class="col-valor-header">Taxa Serviço</th>
+            <th class="col-acoes-header"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-passageiro
+          let-rowIndex="rowIndex">
+          <tr>
+            <td>{{ passageiro.passageiro.nome }}</td>
+            <td >{{ passageiro.nomeEmissao }}</td>
+            <td>{{ passageiro.documento }}</td>
+            <td class="col-valor">{{ passageiro.valorProdutoBrl | number:'1.2-2'}}</td>
+            <td class="col-valor">{{ passageiro.taxasBrl | number:'1.2-2'}}</td>
+            <td class="col-valor">{{ passageiro.outrasTaxasBrl | number:'1.2-2'}}</td>
+            <td class="col-valor">{{ passageiro.taxaRavBrl | number:'1.2-2'}}</td>
+            <td class="col-valor">{{ passageiro.taxaServicoOcultaBrl | number:'1.2-2'}}</td>
+            <td class="col-acoes">
+              <button pButton icon="fa fa-pencil" type="button"
+                pTooTip="Editar" tooltipPosition="top"
+                (click)="prepararEdicaoPassageiro(passageiro, rowIndex)">
+              </button>
+
+              <button pButton icon="fa fa-trash" type="button"
+                pTooTip="Excluir" tooltipPosition="top"
+                (click)="removerPassageiro(rowIndex)">
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+          <tr>
+            <td colspan="3">Totais</td>
+            <td class="col-valor">{{ totalValorProduto | number:'1.2-2' }}</td>
+            <td class="col-valor">{{ totalTaxas | number:'1.2-2' }}</td>
+            <td class="col-valor">{{ totalOutrasTaxas | number:'1.2-2' }}</td>
+            <td class="col-valor">{{ totalTaxaRav | number:'1.2-2' }}</td>
+            <td class="col-valor">{{ totalTaxaServicoOculta | number:'1.2-2' }}</td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="9">
+              Nenhum passageiro cadastrado!
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+  </div>
+
+<p-dialog [header]="editando ? 'Edição Passageiro' : 'Novo Passageiro'"
+  [(visible)]="exibindoFormularioPassageiro" modal="modal"
+  *ngIf="passageiro" appendTo="body"
+  [responsive]="true" [positionTop]="5"
+  [contentStyle]="{'min-height': '590px', 'max-height': '590px', 'max-width': '550px'}"
+  (onShow) ="onShow($event)">
+
+  <form #frmPassageiro="ngForm" autocomplete="off" (ngSubmit)="confirmarPassageiro(frmPassageiro)">
+
+    <p-tabView>
+
+      <p-tabPanel header="Detalhe">
+
+
+        <div class="ui-g-12 ui-fluid">
+          <label>Passageiro</label>
+
+          <p-dropdown #apps name="passageiro" [options]="pessoas"
+            placeholder="Selecione..." [autoWidth]="false"
+            required [filter]="true" [(ngModel)]="passageiro.passageiro.codigo">
+          </p-dropdown>
+        </div>
+
+        <div class="ui-g-12 ui-fluid">
+          <label>Documento</label>
+
+          <input pInputText type="text" name="documento"
+              [(ngModel)]="passageiro.documento">
+        </div>
+
+        <div class="ui-g-12 ui-fluid">
+          <label>Centro de Custo Passageiro</label>
+
+          <input pInputText type="text" name="centroCusto"
+              [(ngModel)]="passageiro.centroCusto">
+        </div>
+
+
+      </p-tabPanel>
+
+      <p-tabPanel header="Valores">
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Moeda Origem</label>
+
+          <p-dropdown name="moeda" [options]="moedas" placeholder="Selecione..."
+            [autoWidth]="false" [(ngModel)]="passageiro.moedaOrigem.codigo"
+            required >
+          </p-dropdown>
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Câmbio</label>
+
+          <input pInputText type="text" name="cambioValor" placeholder="0,0000"
+            currencyMask
+            [options]="{ precision: 4, prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            required [(ngModel)]="passageiro.cambioValor">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Valor Produto em {{ passageiro.moedaOrigem?.sigla }}</label>
+
+          <input pInputText type="text" name="valorProduto" placeholder="0,00" (keydown.tab)="replicarValor()"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            required [(ngModel)]="passageiro.valorProduto">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Valor Produto em BRL</label>
+
+          <input pInputText type="text" name="valorProdutoBrl" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            required [(ngModel)]="passageiro.valorProdutoBrl" [disabled]="true">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Taxa Embarque em {{ passageiro.moedaOrigem?.sigla }}</label>
+
+          <input pInputText type="text" name="taxas" placeholder="0,00" (keydown.tab)="replicarValor()"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.taxas">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Taxa Embarque em BRL</label>
+
+          <input pInputText type="text" name="taxasBrl" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.taxasBrl" [disabled]="true">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Outras Taxa em {{ passageiro.moedaOrigem?.sigla }}</label>
+
+          <input pInputText type="text" name="outrasTaxas" placeholder="0,00" (keydown.tab)="replicarValor()"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.outrasTaxas">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Outras Taxa em BRL</label>
+
+          <input pInputText type="text" name="outrasTaxasBrl" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.outrasTaxasBrl" [disabled]="true">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Taxa RAV em {{ passageiro.moedaOrigem?.sigla }}</label>
+
+          <input pInputText type="text" name="taxaRav" placeholder="0,00" (keydown.tab)="replicarValor()"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.taxaRav">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Taxa RAV em BRL</label>
+
+          <input pInputText type="text" name="taxaRavBrl" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.taxaRavBrl" [disabled]="true">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Taxa Serv. Oculta em {{ passageiro.moedaOrigem?.sigla }}</label>
+
+          <input pInputText type="text" name="taxaServicoOculta" placeholder="0,00" (keydown.tab)="replicarValor()"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.taxaServicoOculta">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Taxa Serv. Oculta em BRL</label>
+
+          <input pInputText type="text" name="taxaServicoOcultaBrl" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.taxaServicoOcultaBrl" [disabled]="true">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Valor total em {{ passageiro.moedaOrigem?.sigla }}</label>
+
+          <input pInputText type="text" name="valorTotal" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.valorTotal"
+            [disabled]="true">
+        </div>
+
+        <div class="ui-g-12 ui-md-6 ui-fluid">
+          <label>Valor total em BRL</label>
+
+          <input pInputText type="text" name="valorTotalBrl" placeholder="0,00"
+            currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+            [(ngModel)]="passageiro.valorTotalBrl"
+            [disabled]="true">
+        </div>
+      </p-tabPanel>
+
+    </p-tabView>
+
+      <div class="ui-g-12">
+        <button pButton type="submit" label="Confirmar"
+          [disabled]="frmPassageiro.invalid">
+        </button>
+      </div>
+
+
+
+  </form>
+
+</p-dialog>

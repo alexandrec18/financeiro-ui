@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 
 import { Categoria } from './../core/model';
 import { AuthService } from './../seguranca/auth.service';
@@ -6,7 +7,6 @@ import { environment } from './../../environments/environment';
 import { GlobalHttp } from 'app/seguranca/global-http';
 
 import 'rxjs/add/operator/toPromise';
-import { HttpParams } from '@angular/common/http';
 
 export class CategoriaFiltro {
   nome: string;

@@ -1,0 +1,121 @@
+
+<div class="ui-g-12 ui-md-2 ui-fluid">
+  <p-card>
+    <div class="ui-g">
+
+      <label>Comissão %</label>
+      <input pInputText type="text" name="comissaoPorcentagem" placeholder="0,0000"
+        currencyMask
+        [options]="{ precision: 4, prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.comissaoPorcentagem"
+        (blur)="calcularValorComissao()">
+
+      <label>Comissão Valor</label>
+      <input pInputText type="text" name="comissaoValor" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.comissaoValor">
+
+    </div>
+  </p-card>
+</div>
+
+<div class="ui-g-12 ui-md-2 ui-fluid">
+
+    <p-card header="Simple Card">
+
+      <label>Câmbio Moeda</label>
+      <p-dropdown name="moeda" [options]="moedas" placeholder="Selecione..."
+        [autoWidth]="false" [(ngModel)]="valores.codigoMoeda.codigo" required>
+      </p-dropdown>
+
+      <label>Câmbio Valor</label>
+      <input pInputText type="text" name="cambioValor" placeholder="0,0000"
+        currencyMask [options]="{ precision: 4, prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.cambioValor">
+
+    </p-card>
+
+</div>
+
+<div class="ui-g-12 ui-md-2 ui-fluid">
+  <p-card header="Simple Card">
+    <div class="ui-g">
+
+      <label>Over %</label>
+      <input pInputText type="text" name="overPorcentagem" placeholder="0,0000"
+        currencyMask [options]="{ precision: 4, prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.overPorcentagem"
+        (blur)="calcularValorOver()">
+
+      <label>Over Sobre %</label>
+      <input pInputText type="text" name="overSobre" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.overSobre"
+        (blur)="calcularValorOver()">
+
+      <label>Over Valor</label>
+      <input pInputText type="text" name="overValor" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.overValor">
+
+    </div>
+  </p-card>
+</div>
+
+<div class="ui-g-12 ui-md-2 ui-fluid">
+  <p-card header="Simple Card">
+    <div class="ui-g">
+
+      <label class="lab-desc">Abatimentos</label>
+      <input pInputText type="text" name="operadoraAbatimentos" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.operadoraAbatimentos"
+        (blur)="calcularValorTotalAbatimentos()">
+
+      <label class="lab-desc">Taxa CC RAV</label>
+      <input pInputText type="text" name="operadoraTaxaCcRav" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.operadoraTaxaCcRav">
+
+    </div>
+  </p-card>
+</div>
+
+<div class="ui-g-12 ui-md-2 ui-fluid">
+  <p-card header="Simple Card">
+    <div class="ui-g">
+
+      <label>Tx. Serv. Dest.</label>
+      <input pInputText type="text" name="agenciaTaxaServDestac" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.agenciaTaxaServDestac"
+        (blur)="calcularValorTotalTaxaServDestac()">
+
+      <label class="lab-desc">Desconto</label>
+      <input pInputText type="text" name="agenciaDesconto" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.agenciaDesconto"
+        (blur)="calcularValorTotalDesconto()">
+
+    </div>
+  </p-card>
+</div>
+
+<div class="ui-g-12 ui-md-2 ui-fluid">
+  <p-card header="Simple Card">
+    <div class="ui-g">
+
+      <label>Valor Total</label>
+      <input pInputText type="text" name="valorTotal" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.valorTotal" disabled="true">
+
+      <label>Valor Total BRL</label>
+      <input pInputText type="text" name="valorTotalBrl" placeholder="0,00"
+        currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
+        [(ngModel)]="valores.valorTotalBrl" disabled="true">
+
+    </div>
+  </p-card>
+</div>
+
