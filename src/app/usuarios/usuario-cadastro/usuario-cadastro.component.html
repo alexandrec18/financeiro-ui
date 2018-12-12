@@ -17,7 +17,7 @@
         </app-message>
       </div>
 
-      <div class="ui-g-12 ui-md-6 ui-fluid">
+      <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="admin">
         <label>Empresa</label>
         <p-dropdown name="empresa" [options]="empresas"
           placeholder="Selecione" [autoWidth]="false"

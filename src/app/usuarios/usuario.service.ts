@@ -36,6 +36,10 @@ export class UsuarioService {
       params = params.append('nome', filtro.nome);
     }
 
+    if (this.auth.jwtPayload.empresa.codigo !== 1) {
+      params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
+    }
+
     return this.http.get<any>(`${this.usuarioUrl}`,
         { params })
       .toPromise()
@@ -52,8 +56,12 @@ export class UsuarioService {
   }
 
   listarTodas(): Promise<any> {
+    let params = new HttpParams();
 
-    return this.http.get<any>(this.usuarioUrl)
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
+
+    return this.http.get<any>(this.usuarioUrl,
+        { params })
       .toPromise()
       .then(response => response.content);
   }

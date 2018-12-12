@@ -1,3 +1,4 @@
+import { AuthService } from './../seguranca/auth.service';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -19,7 +20,8 @@ export class EmpresaService {
   empresaUrl: string;
 
   constructor(
-    private http: GlobalHttp
+    private http: GlobalHttp,
+    private auth: AuthService
   ) {
     this.empresaUrl = `${environment.apiUrl}/empresas`;
   }
@@ -32,6 +34,10 @@ export class EmpresaService {
 
     if (filtro.nome) {
       params = params.append('nome', filtro.nome);
+    }
+
+    if (this.auth.jwtPayload.empresa.codigo !== 1) {
+      params = params.append('codigo', this.auth.jwtPayload.empresa.codigo);
     }
 
     return this.http.get<any>(`${this.empresaUrl}`, { params })

@@ -1,3 +1,4 @@
+import { AuthService } from './../../seguranca/auth.service';
 import { EmpresaService } from './../../empresas/empresa.service';
 import { FormControl } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
@@ -31,7 +32,8 @@ export class UsuarioCadastroComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private title: Title
+    private title: Title,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -49,6 +51,10 @@ export class UsuarioCadastroComponent implements OnInit {
 
   get editando() {
     return Boolean(this.usuario.codigo);
+  }
+
+  get admin() {
+    return Boolean(this.auth.jwtPayload.empresa.codigo === 1);
   }
 
   carregarUsuario(codigo: number) {
@@ -71,6 +77,11 @@ export class UsuarioCadastroComponent implements OnInit {
 
   adicionarUsuario(form: FormControl) {
     this.atualizarPermissoesAdicionar();
+
+    if (this.auth.jwtPayload.empresa.codigo !== 1) {
+      this.usuario.empresa.codigo = this.auth.jwtPayload.empresa.codigo;
+    }
+
     this.usuarioService.adicionar(this.usuario)
       .then(() => {
         this.messageService.add({ severity: 'success', detail: 'Usuário adicionado com sucesso!'});

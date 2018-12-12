@@ -6,6 +6,7 @@ import { ConfirmationService, LazyLoadEvent } from 'primeng/components/common/ap
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { EmpresaFiltro, EmpresaService } from './../empresa.service';
 import { MessageService } from 'primeng/components/common/messageservice';
+import { AuthService } from 'app/seguranca/auth.service';
 
 @Component({
   selector: 'app-empresas-pesquisa',
@@ -24,11 +25,16 @@ export class EmpresasPesquisaComponent implements OnInit {
     private errorHandler: ErrorHandlerService,
     private confirmation: ConfirmationService,
     private messageService: MessageService,
-    private title: Title
+    private title: Title,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     this.title.setTitle('Pesquisa de empresas');
+  }
+
+  get admin() {
+    return Boolean(this.auth.jwtPayload.empresa.codigo === 1);
   }
 
   pesquisar(pagina = 0) {
