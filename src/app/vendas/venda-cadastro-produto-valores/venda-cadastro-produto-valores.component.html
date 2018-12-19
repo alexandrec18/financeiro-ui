@@ -7,13 +7,12 @@
       <input pInputText type="text" name="comissaoPorcentagem" placeholder="0,0000"
         currencyMask
         [options]="{ precision: 4, prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-        [(ngModel)]="valores.comissaoPorcentagem"
-        (blur)="calcularValorComissao()">
+        [(ngModel)]="valores.comissaoPorcentagem" (blur)="calcularValorComissao()">
 
       <label>Comissão Valor</label>
       <input pInputText type="text" name="comissaoValor" placeholder="0,00"
         currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-        [(ngModel)]="valores.comissaoValor">
+        [(ngModel)]="valores.comissaoValor" (blur)="calcularPorcentagemComissao()">
 
     </div>
   </p-card>
@@ -44,19 +43,17 @@
       <label>Over %</label>
       <input pInputText type="text" name="overPorcentagem" placeholder="0,0000"
         currencyMask [options]="{ precision: 4, prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-        [(ngModel)]="valores.overPorcentagem"
-        (blur)="calcularValorOver()">
+        [(ngModel)]="valores.overPorcentagem" (blur)="calcularValorOver()">
 
       <label>Over Sobre %</label>
       <input pInputText type="text" name="overSobre" placeholder="0,00"
         currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-        [(ngModel)]="valores.overSobre"
-        (blur)="calcularValorOver()">
+        [(ngModel)]="valores.overSobre" (blur)="calcularValorOver()">
 
       <label>Over Valor</label>
       <input pInputText type="text" name="overValor" placeholder="0,00"
         currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-        [(ngModel)]="valores.overValor">
+        [(ngModel)]="valores.overValor" (blur)="calcularPorcentagemOver()">
 
     </div>
   </p-card>

@@ -15,9 +15,8 @@
 
         <ng-template pTemplate="header">
           <tr>
-            <th>Nome</th>
-            <th >N. Emissão</th>
-            <th>Documento</th>
+            <th style="width: 250px">Nome</th>
+            <th style="width: 130px">Documento</th>
             <th class="col-valor-header">Valor</th>
             <th class="col-valor-header">Taxa</th>
             <th class="col-valor-header">Outras Taxas</th>
@@ -30,9 +29,8 @@
         <ng-template pTemplate="body" let-passageiro
           let-rowIndex="rowIndex">
           <tr>
-            <td>{{ passageiro.passageiro.nome }}</td>
-            <td >{{ passageiro.nomeEmissao }}</td>
-            <td>{{ passageiro.documento }}</td>
+            <td style="width: 250px">{{ passageiro.passageiro.nome }}</td>
+            <td style="width: 130px">{{ passageiro.documento }}</td>
             <td class="col-valor">{{ passageiro.valorProdutoBrl | number:'1.2-2'}}</td>
             <td class="col-valor">{{ passageiro.taxasBrl | number:'1.2-2'}}</td>
             <td class="col-valor">{{ passageiro.outrasTaxasBrl | number:'1.2-2'}}</td>
@@ -54,7 +52,7 @@
 
         <ng-template pTemplate="footer">
           <tr>
-            <td colspan="3">Totais</td>
+            <td colspan="2">Totais</td>
             <td class="col-valor">{{ totalValorProduto | number:'1.2-2' }}</td>
             <td class="col-valor">{{ totalTaxas | number:'1.2-2' }}</td>
             <td class="col-valor">{{ totalOutrasTaxas | number:'1.2-2' }}</td>
@@ -65,7 +63,7 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="9">
+            <td colspan="8">
               Nenhum passageiro cadastrado!
             </td>
           </tr>
@@ -137,9 +135,9 @@
         <div class="ui-g-12 ui-md-6 ui-fluid">
           <label>Valor Produto em {{ passageiro.moedaOrigem?.sigla }}</label>
 
-          <input pInputText type="text" name="valorProduto" placeholder="0,00" (keydown.tab)="replicarValor()"
+          <input pInputText type="text" name="valorProduto" placeholder="0,00"
             currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-            required [(ngModel)]="passageiro.valorProduto">
+            required [(ngModel)]="passageiro.valorProduto" (blur)="replicarValor()">
         </div>
 
         <div class="ui-g-12 ui-md-6 ui-fluid">
@@ -153,9 +151,9 @@
         <div class="ui-g-12 ui-md-6 ui-fluid">
           <label>Taxa Embarque em {{ passageiro.moedaOrigem?.sigla }}</label>
 
-          <input pInputText type="text" name="taxas" placeholder="0,00" (keydown.tab)="replicarValor()"
+          <input pInputText type="text" name="taxas" placeholder="0,00"
             currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-            [(ngModel)]="passageiro.taxas">
+            [(ngModel)]="passageiro.taxas" (blur)="replicarValor()">
         </div>
 
         <div class="ui-g-12 ui-md-6 ui-fluid">
@@ -169,9 +167,9 @@
         <div class="ui-g-12 ui-md-6 ui-fluid">
           <label>Outras Taxa em {{ passageiro.moedaOrigem?.sigla }}</label>
 
-          <input pInputText type="text" name="outrasTaxas" placeholder="0,00" (keydown.tab)="replicarValor()"
+          <input pInputText type="text" name="outrasTaxas" placeholder="0,00"
             currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-            [(ngModel)]="passageiro.outrasTaxas">
+            [(ngModel)]="passageiro.outrasTaxas" (blur)="replicarValor()">
         </div>
 
         <div class="ui-g-12 ui-md-6 ui-fluid">
@@ -185,9 +183,9 @@
         <div class="ui-g-12 ui-md-6 ui-fluid">
           <label>Taxa RAV em {{ passageiro.moedaOrigem?.sigla }}</label>
 
-          <input pInputText type="text" name="taxaRav" placeholder="0,00" (keydown.tab)="replicarValor()"
+          <input pInputText type="text" name="taxaRav" placeholder="0,00"
             currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-            [(ngModel)]="passageiro.taxaRav">
+            [(ngModel)]="passageiro.taxaRav" (blur)="replicarValor()">
         </div>
 
         <div class="ui-g-12 ui-md-6 ui-fluid">
@@ -201,9 +199,9 @@
         <div class="ui-g-12 ui-md-6 ui-fluid">
           <label>Taxa Serv. Oculta em {{ passageiro.moedaOrigem?.sigla }}</label>
 
-          <input pInputText type="text" name="taxaServicoOculta" placeholder="0,00" (keydown.tab)="replicarValor()"
+          <input pInputText type="text" name="taxaServicoOculta" placeholder="0,00"
             currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', allowNegative: false }"
-            [(ngModel)]="passageiro.taxaServicoOculta">
+            [(ngModel)]="passageiro.taxaServicoOculta" (blur)="replicarValor()">
         </div>
 
         <div class="ui-g-12 ui-md-6 ui-fluid">
@@ -235,13 +233,11 @@
 
     </p-tabView>
 
-      <div class="ui-g-12">
-        <button pButton type="submit" label="Confirmar"
-          [disabled]="frmPassageiro.invalid">
-        </button>
-      </div>
-
-
+    <div class="ui-g-12">
+      <button pButton type="submit" label="Confirmar"
+        [disabled]="frmPassageiro.invalid">
+      </button>
+    </div>
 
   </form>
 

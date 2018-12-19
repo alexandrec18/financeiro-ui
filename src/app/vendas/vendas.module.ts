@@ -2,6 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { CardModule } from 'primeng/card';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { SplitButtonModule } from 'primeng/splitbutton';
@@ -31,6 +32,7 @@ import { VendaCadastroProdutoPassageiroComponent } from './venda-cadastro-produt
 import { VendaCadastroProdutoValoresComponent } from './venda-cadastro-produto-valores/venda-cadastro-produto-valores.component';
 import { VendaCadastroPagamentoComponent } from './venda-cadastro-pagamento/venda-cadastro-pagamento.component';
 import { VendaCadastroPagamentoProdutoComponent } from './venda-cadastro-pagamento-produto/venda-cadastro-pagamento-produto.component';
+import { VendaCadastroProdutoGenericoComponent } from './venda-cadastro-produto-generico/venda-cadastro-produto-generico.component';
 
 @NgModule({
   imports: [
@@ -51,6 +53,7 @@ import { VendaCadastroPagamentoProdutoComponent } from './venda-cadastro-pagamen
     SplitButtonModule,
     DialogModule,
     ProgressSpinnerModule,
+    OverlayPanelModule,
 
     SharedModule,
 
@@ -67,7 +70,8 @@ import { VendaCadastroPagamentoProdutoComponent } from './venda-cadastro-pagamen
     VendaCadastroProdutoPassageiroComponent,
     VendaCadastroProdutoValoresComponent,
     VendaCadastroPagamentoComponent,
-    VendaCadastroPagamentoProdutoComponent
+    VendaCadastroPagamentoProdutoComponent,
+    VendaCadastroProdutoGenericoComponent
   ]
 })
 export class VendasModule { }

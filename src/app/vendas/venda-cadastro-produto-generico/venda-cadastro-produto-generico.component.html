@@ -1,7 +1,7 @@
-<p-dialog [header]="editando ? 'Edição de Pacote' : 'Novo Pacote'"
+<p-dialog [header]="editando ? 'Edição de ' + labelCabecalho : 'Novo ' + labelCabecalho"
   *ngIf="vendaProduto" [contentStyle]="{'max-height': '590px', 'max-width': '1170px'}"
   modal="modal" [responsive]="true" [positionTop]="5"
-  [(visible)]="exibindoFormularioVendaProduto">
+  [(visible)]="exibindoFormularioVendaProduto" (onShow)="onShow($event)">
 
   <form #frmProduto="ngForm" autocomplete="off" (ngSubmit)="confirmarVendaProduto(frmProduto)">
 
@@ -12,7 +12,7 @@
         <div class="ui-g">
 
           <div class="ui-g-12 ui-md-6 ui-fluid">
-            <label>Fornecedor</label>
+            <label>{{ labelFornecedor }}</label>
 
             <p-dropdown name="fornecedor" [options]="fornecedores"
               placeholder="Selecione..." [autoWidth]="false"
@@ -25,15 +25,15 @@
           </div>
 
           <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Início</label>
+            <label>{{ labelDataInicial }}</label>
 
             <p-calendar name="dataInicio" dateFormat="dd/mm/yy"
               [inline]="false" [readonlyInput]="false" [showIcon]="true"
               [(ngModel)]="vendaProduto.dataInicio" required></p-calendar>
           </div>
 
-          <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Hora Início</label>
+          <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="exibirHoras">
+            <label>{{ labelHoraInicial }}</label>
 
             <p-calendar name="horaInicio"
               [inline]="false" [readonlyInput]="false" [showIcon]="true"
@@ -50,15 +50,15 @@
           </div>
 
           <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Fim</label>
+            <label>{{ labelDataFinal }}</label>
 
             <p-calendar name="dataFim" dateFormat="dd/mm/yy"
               [inline]="false" [readonlyInput]="false" [showIcon]="true"
-              [(ngModel)]="vendaProduto.dataFim"></p-calendar>
+              [(ngModel)]="vendaProduto.dataFim" required></p-calendar>
           </div>
 
-          <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Hora Fim</label>
+          <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="exibirHoras">
+            <label>{{ labelHoraFinal }}</label>
 
             <p-calendar name="horaFim"
               [inline]="false" [readonlyInput]="false" [showIcon]="true"
@@ -67,57 +67,75 @@
 
 
           <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Documento</label>
+            <label>{{ labelReserva }}</label>
 
             <input pInputText type="text" name="documento"
               [(ngModel)]="vendaProduto.documento"/>
           </div>
 
-          <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Pacote</label>
+          <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="vendaProduto.produto === 'AC'">
+            <label>Retirada</label>
 
-            <p-dropdown name="pacote" [options]="pacotes"
-              placeholder="Selecione..." [autoWidth]="false"
-              [filter]="true" [(ngModel)]="vendaProduto.pacote.codigo"
-              required>
-            </p-dropdown>
+            <input pInputText type="text" name="retirada"
+              [(ngModel)]="vendaProduto.retirada"/>
           </div>
 
-          <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Transporte</label>
+          <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="vendaProduto.produto === 'AC'">
+            <label>Devolucao</label>
 
-            <p-dropdown name="transporte" [options]="transportes"
-              placeholder="Selecione..." [autoWidth]="false" [showClear]="true"
-              [filter]="true" [(ngModel)]="vendaProduto.transporte.codigo">
-            </p-dropdown>
+            <input pInputText type="text" name="devolucao"
+              [(ngModel)]="vendaProduto.devolucao"/>
           </div>
 
-          <div class="ui-g-12 ui-md-3 ui-fluid">
-            <label>Destino</label>
+          <div class="ui-g-12 ui-md-3 ui-fluid" *ngIf="vendaProduto.produto === 'AC'">
+            <label>Categoria</label>
 
-            <p-dropdown name="destino" [options]="destinos"
-              placeholder="Selecione..." [autoWidth]="false"
-              [filter]="true" [(ngModel)]="vendaProduto.destino"
-              required>
-            </p-dropdown>
+            <input pInputText type="text" name="categoria"
+              [(ngModel)]="vendaProduto.categoria"/>
           </div>
 
-
-          <div class="ui-g-12 ui-md-4 ui-fluid">
+          <div class="ui-g-12 ui-md-4 ui-fluid"
+            *ngIf="vendaProduto.produto === 'AC' || vendaProduto.produto === 'SV' || vendaProduto.produto === 'CI'">
             <label>Número NF</label>
 
             <input pInputText type="text" name="numeroNf"
               [(ngModel)]="vendaProduto.numeroNf"/>
           </div>
 
-          <div class="ui-g-12 ui-md-4 ui-fluid">
+          <div class="ui-g-12 ui-md-4 ui-fluid"
+            *ngIf="vendaProduto.produto === 'AC' || vendaProduto.produto === 'SV' || vendaProduto.produto === 'CI'">
             <label>Número Externo</label>
 
             <input pInputText type="text" name="numeroExterno"
               [(ngModel)]="vendaProduto.numeroExterno"/>
           </div>
 
-          <div class="ui-g-12 ui-md-4 ui-fluid">
+          <div class="ui-g-12 ui-md-4 ui-fluid"
+            *ngIf="vendaProduto.produto === 'AC' || vendaProduto.produto === 'SV' || vendaProduto.produto === 'CI'">
+            <label>Recibo Operadora</label>
+
+            <input pInputText type="text" name="reciboOperadora"
+              [(ngModel)]="vendaProduto.reciboOperadora"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid"
+            *ngIf="vendaProduto.produto === 'VI' || vendaProduto.produto === 'SE' || vendaProduto.produto === 'IG'">
+            <label>Número NF</label>
+
+            <input pInputText type="text" name="numeroNf"
+              [(ngModel)]="vendaProduto.numeroNf"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid"
+            *ngIf="vendaProduto.produto === 'VI' || vendaProduto.produto === 'SE' || vendaProduto.produto === 'IG'">
+            <label>Número Externo</label>
+
+            <input pInputText type="text" name="numeroExterno"
+              [(ngModel)]="vendaProduto.numeroExterno"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-3 ui-fluid"
+            *ngIf="vendaProduto.produto === 'VI' || vendaProduto.produto === 'SE' || vendaProduto.produto === 'IG'">
             <label>Recibo Operadora</label>
 
             <input pInputText type="text" name="reciboOperadora"

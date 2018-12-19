@@ -79,6 +79,7 @@ export class VendaCadastroComponent implements OnInit {
       .then(venda => {
         this.venda = venda;
 
+        this.isReady = true;
         this.atualizarTituloEdicao();
         this.iniciarVariaveis();
         this.iniciarVerificacoes();
@@ -104,6 +105,7 @@ export class VendaCadastroComponent implements OnInit {
 
     this.calcularTotaisVenda();
 
+    this.isReady = false;
     this.vendaService.adicionar(this.venda)
       .then(vendaAdicionado => {
         this.messageService.add({ severity: 'success', detail: 'Venda adicionada com sucesso!'});

@@ -1,9 +1,9 @@
 <p-dialog [header]="editando ? 'Edição de Hospedagem' : 'Nova Hospedagem'"
-  *ngIf="vendaProduto" [contentStyle]="{'max-height': '590px', 'max-width': '1100px'}"
+  *ngIf="vendaProduto" [contentStyle]="{'max-height': '590px', 'max-width': '1170px'}"
   modal="modal" [responsive]="true" [positionTop]="5"
   [(visible)]="exibindoFormularioVendaProduto">
 
-  <form #frmProduto="ngForm" (ngSubmit)="confirmarVendaProduto(frmProduto)">
+  <form #frmProduto="ngForm" autocomplete="off" (ngSubmit)="confirmarVendaProduto(frmProduto)">
 
     <p-tabView>
 

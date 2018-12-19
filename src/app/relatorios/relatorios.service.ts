@@ -31,4 +31,16 @@ export class RelatoriosService {
       .toPromise();
   }
 
+  relatorioLancamentosPorPeriodo(inicio: Date, fim: Date) {
+    let params = new HttpParams();
+
+    params = params.append('inicio', moment(inicio).format('YYYY-MM-DD'));
+    params = params.append('fim', moment(fim).format('YYYY-MM-DD'));
+    params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
+
+    return this.http.get(`${this.lancamentosUrl}/relatorios/por-periodo`,
+      { params, responseType: 'blob' })
+      .toPromise();
+  }
+
 }

@@ -1,3 +1,21 @@
+export class VendaValoresPassageirosConsolidados {
+  valorProduto = 0;
+  taxaEmbarque = 0;
+  outrasTaxas = 0;
+  taxaRav = 0;
+  taxaServicoOculta = 0;
+}
+
+export class VendaValoresProdutoConsolidado {
+  valorComissao: number;
+  valorOver: number;
+  abatimentos: number;
+  taxaServicoDestacada: number;
+  desconto: number;
+  valorTotal: number;
+}
+
+
 
 export class Estado {
   codigo: number;
@@ -175,6 +193,9 @@ export class VendaProduto {
   numeroExterno: string;
   reciboOperadora: string;
   observacao: string;
+  retirada: string;
+  devolucao: string;
+  categoria: string;
 
   constructor(
     codigo?: number,
@@ -298,6 +319,8 @@ export class ValoresVendaProduto {
   valorTotalBrl: number;
   saldo: number;
   saldoBrl: number;
+  valorTotalOriginal: number;
+  valorTotalOriginalBrl: number;
 }
 
 export class VendaProdutoPassageiro {

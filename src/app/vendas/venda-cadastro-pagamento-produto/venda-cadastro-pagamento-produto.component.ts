@@ -1,7 +1,10 @@
 import { FormControl } from '@angular/forms';
-import { VendaFormaPagamentoProduto } from './../../core/model';
 import { Component, OnInit, Input } from '@angular/core';
+
 import { MenuItem } from 'primeng/api';
+
+import { VendaService } from './../venda.service';
+import { VendaFormaPagamentoProduto, VendaProduto } from './../../core/model';
 
 @Component({
   selector: 'app-venda-cadastro-pagamento-produto',
@@ -11,29 +14,25 @@ import { MenuItem } from 'primeng/api';
 export class VendaCadastroPagamentoProdutoComponent implements OnInit {
 
   @Input() vendaFormaPagamentoProdutos: Array<VendaFormaPagamentoProduto>;
-  @Input() produtos: MenuItem[];
+  @Input() vendaProdutos: Array<VendaProduto>;
 
   vendaFormaPagamentoProduto: VendaFormaPagamentoProduto;
 
   exibindoFormularioVendaFormaPagamentoProduto = false;
   vendaFormaPagamentoProdutoIndex: number;
 
-  constructor() { }
+  produtos: MenuItem[];
+
+  constructor(
+    private vendaService: VendaService
+  ) { }
 
   ngOnInit() {
+    console.log('teste');
   }
 
-  descricaoProduto(produto) {
-    if (produto === 'PA') {
-      return 'Passagem Aérea';
-    }
-    if (produto === 'DH') {
-      return 'Diárias de Hospedagem';
-    }
-    if (produto === 'PT') {
-      return 'Pacote Turístico';
-    }
-    return '';
+  descricaoProduto(produto: string) {
+    return this.vendaService.descricaoProduto(produto);
   }
 
   prepararNovoFormaPagamentoProduto() {
@@ -66,5 +65,22 @@ export class VendaCadastroPagamentoProdutoComponent implements OnInit {
 
   get editando() {
     return this.vendaFormaPagamentoProduto && this.vendaFormaPagamentoProduto.codigo
+  }
+
+  onShow() {
+    this.produtos = this.vendaProdutos.map(v => ({
+      label: this.descricaoProduto(v.produto),
+      value: v.produto
+    }));
+  }
+
+  onChange(event) {
+    for (const vendaProduto of this.vendaProdutos) {
+      if (vendaProduto.produto === event.value) {
+        this.vendaFormaPagamentoProduto.valor = vendaProduto.valoresVendaProduto.saldoBrl;
+        break;
+      }
+    }
+
   }
 }

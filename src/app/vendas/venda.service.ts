@@ -40,6 +40,37 @@ export class VendaService {
     this.emitirCalcularFormaPagamentoSaldo.emit();
   }
 
+  descricaoProduto(produto: string) {
+    if (produto === 'PA') {
+      return 'Passagem Aérea';
+    }
+    if (produto === 'DH') {
+      return 'Diária de Hospedagem';
+    }
+    if (produto === 'PT') {
+      return 'Pacote Turístico';
+    }
+    if (produto === 'AC') {
+      return 'Aluguel de Carro';
+    }
+    if (produto === 'VI') {
+      return 'Visto';
+    }
+    if (produto === 'SV') {
+      return 'Seguro Viagem';
+    }
+    if (produto === 'SE') {
+      return 'Serviço';
+    }
+    if (produto === 'IG') {
+      return 'Ingresso';
+    }
+    if (produto === 'CI') {
+      return 'Chip Internacional';
+    }
+    return '';
+  }
+
   pesquisar(filtro: VendaFiltro): Promise<any> {
     let params = new HttpParams();
 
@@ -156,6 +187,16 @@ export class VendaService {
         if (vendaProduto.dataFim) {
           vendaProduto.dataFim = moment(vendaProduto.dataFim,
             'YYYY-MM-DD').toDate();
+        }
+
+        if (vendaProduto.horaInicio) {
+          vendaProduto.horaInicio = moment(vendaProduto.horaInicio,
+            'YYYY-MM-DD HH:mm:ss').toDate();
+        }
+
+        if (vendaProduto.horaFim) {
+          vendaProduto.horaFim = moment(vendaProduto.horaFim,
+            'YYYY-MM-DD HH:mm:ss').toDate();
         }
 
         for (const vendaProdutoTrecho of vendaProduto.vendaProdutoTrecho) {

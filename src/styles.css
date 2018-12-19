@@ -51,6 +51,15 @@ label {
   width: 120px;
 }
 
+.col-hora {
+  width: 80px;
+  text-align: center;
+}
+
+.col-hora-header {
+  width: 80px;
+}
+
 .col-acoes {
   width: 90px;
   text-align: center;
@@ -86,12 +95,12 @@ label {
 }
 
 .col-aero {
-  width: 100px;
+  width: 80px;
   text-align: center;
 }
 
 .col-aero-header {
-  width: 100px;
+  width: 80px;
 }
 
 .col-valor-pag {

@@ -10,12 +10,14 @@
           </ng-template>
         <ng-template pTemplate="header">
           <tr>
-            <th>Cia. Aérea</th>
-            <th>Vôo</th>
+            <th style="width: 120px">Cia. Aérea</th>
+            <th style="width: 120px">Vôo</th>
             <th class="col-aero-header">Origem</th>
             <th class="col-data-header">Saída</th>
+            <th class="col-hora-header">Hora</th>
             <th class="col-aero-header">Destino</th>
             <th class="col-data-header">Chegada</th>
+            <th class="col-hora-header">Hora</th>
             <th class="col-acoes-header"></th>
           </tr>
         </ng-template>
@@ -23,12 +25,14 @@
         <ng-template pTemplate="body" let-trecho
           let-rowIndex="rowIndex">
           <tr>
-            <td>{{ trecho.ciaAerea }}</td>
-            <td>{{ trecho.voo }}</td>
+            <td style="width: 120px">{{ trecho.ciaAerea }}</td>
+            <td style="width: 120px">{{ trecho.voo }}</td>
             <td class="col-aero">{{ trecho.aeroportoOrigem?.iata }}</td>
             <td class="col-data">{{ trecho.dataSaida | date:"dd/MM/yyyy"}}</td>
+            <td class="col-hora">{{ trecho.horaSaida | date:"H:mm"}}</td>
             <td class="col-aero">{{ trecho.aeroportoDestino?.iata }}</td>
             <td class="col-data">{{ trecho.dataChegada | date:"dd/MM/yyyy" }}</td>
+            <td class="col-hora">{{ trecho.horaChegada | date:"H:mm"}}</td>
             <td class="col-acoes">
               <button pButton icon="fa fa-pencil" type="button"
                 pTooTip="Editar" tooltipPosition="top"
@@ -45,7 +49,7 @@
 
         <ng-template pTemplate="emptymessage">
           <tr>
-            <td colspan="7">
+            <td colspan="9">
               Nenhum trecho cadastrado!
             </td>
           </tr>

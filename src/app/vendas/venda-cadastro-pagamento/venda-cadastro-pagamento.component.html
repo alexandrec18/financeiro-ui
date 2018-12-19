@@ -70,7 +70,7 @@
     <div class="ui-g-12">
       <app-venda-cadastro-pagamento-produto
         [vendaFormaPagamentoProdutos]="vendaFormaPagamento.vendaFormaPagamentoProduto"
-        [produtos]="produtos">
+        [vendaProdutos]="vendaProdutos">
       </app-venda-cadastro-pagamento-produto>
     </div>
 
@@ -93,15 +93,13 @@
     <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="vendaFormaPagamento.formaPagamento === 'CCF'">
       <label>Autorização</label>
       <input pInputText type="text" name="autorizacao"
-        [(ngModel)]="vendaFormaPagamento.autorizacao"
-        required>
+        [(ngModel)]="vendaFormaPagamento.autorizacao">
     </div>
 
     <div class="ui-g-12 ui-md-6 ui-fluid" *ngIf="vendaFormaPagamento.formaPagamento === 'CCF'">
       <label>Cartão</label>
       <input pInputText type="text" name="cartao"
-        [(ngModel)]="vendaFormaPagamento.numero"
-        required>
+        [(ngModel)]="vendaFormaPagamento.numero">
     </div>
 
     <div class="ui-g-12">

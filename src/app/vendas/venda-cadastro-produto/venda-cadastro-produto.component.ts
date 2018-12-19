@@ -3,7 +3,8 @@ import { Component, OnInit, Input, AfterViewInit, OnChanges } from '@angular/cor
 
 import { MenuItem } from 'primeng/api';
 
-import { VendaProduto, Aeroporto, VendaFormaPagamento } from './../../core/model';
+import { VendaProduto, Aeroporto, VendaFormaPagamento, VendaValoresPassageirosConsolidados,
+         VendaValoresProdutoConsolidado } from './../../core/model';
 
 @Component({
   selector: 'app-venda-cadastro-produto',
@@ -19,18 +20,31 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
   exibindoFormularioVendaProduto = false;
   vendaProdutoIndex: number;
 
-  items: MenuItem[];
-
   exibirDiariaHospedagem = false;
   exibirPassagemAerea = false;
   exibirPacoteTuristico = false;
+  exibirGenerico = false;
 
   valorTotalGeral: number;
+
+  valoresPassageirosConsolidados: VendaValoresPassageirosConsolidados;
+  valoresProdutoConsolidado: VendaValoresProdutoConsolidado;
+  valorTotalComissao: number;
+
+  passageirosConsolidados: any[];
+  produtoConsolidado: any[];
 
   constructor( private vendaService: VendaService ) { }
 
   ngOnInit() {
-    this.items = [
+  }
+
+  ngOnChanges() {
+    this.calcularValorTotalProdutos();
+  }
+
+  getItems(): MenuItem[] {
+    return [
       {label: 'Diária de Hospedagem', command: () => {
         this.diariaHospedagem();
       }},
@@ -39,25 +53,30 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
       }},
       {label: 'Pacote Turistico', command: () => {
         this.pacoteTuristico();
+      }},
+      {label: 'Aluguel de Carro', command: () => {
+        this.produtoGenerico('AC');
+      }},
+      {label: 'Visto', command: () => {
+        this.produtoGenerico('VI');
+      }},
+      {label: 'Seguro Viagem', command: () => {
+        this.produtoGenerico('SV');
+      }},
+      {label: 'Serviço', command: () => {
+        this.produtoGenerico('SE');
+      }},
+      {label: 'Ingresso', command: () => {
+        this.produtoGenerico('IG');
+      }},
+      {label: 'Chip Internacional', command: () => {
+        this.produtoGenerico('CI');
       }}
     ];
   }
 
-  ngOnChanges() {
-    this.calcularValorTotalProdutos();
-  }
-
-  descricaoProduto(produto) {
-    if (produto === 'PA') {
-      return 'Passagem Aérea';
-    }
-    if (produto === 'DH') {
-      return 'Diárias de Hospedagem';
-    }
-    if (produto === 'PT') {
-      return 'Pacote Turístico';
-    }
-    return '';
+  descricaoProduto(produto: string) {
+    return this.vendaService.descricaoProduto(produto);
   }
 
   prepararNovoVendaProduto() {
@@ -123,6 +142,13 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
     this.exibirPacoteTuristico = true;
   }
 
+  produtoGenerico(produto: string) {
+    this.prepararNovoVendaProduto();
+    this.vendaProduto.produto = produto;
+    this.desabilitandoProdutos();
+    this.exibirGenerico = true;
+  }
+
   aoConfirmarProduto(produto) {
     this.confirmarVendaProduto();
     this.vendaService.eventCalcularFormaPagamentoSaldo();
@@ -133,12 +159,16 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
     this.exibirPassagemAerea = false;
     this.exibirPacoteTuristico = false;
     this.exibirDiariaHospedagem = false;
+    this.exibirGenerico = false;
   }
 
   exibirFormularioProdutos() {
     this.exibirPassagemAerea = (this.vendaProduto.produto === 'PA');
     this.exibirPacoteTuristico = (this.vendaProduto.produto === 'PT');
     this.exibirDiariaHospedagem = (this.vendaProduto.produto === 'DH');
+    this.exibirGenerico = (this.vendaProduto.produto !== 'PA' &&
+                           this.vendaProduto.produto !== 'PT' &&
+                           this.vendaProduto.produto !== 'DH');
   }
 
   calcularSaldoProdutos() {
@@ -193,5 +223,48 @@ export class VendaCadastroProdutoComponent implements OnInit, OnChanges {
     this.vendaProduto.valoresVendaProduto.agenciaDesconto = 0;
     this.vendaProduto.valoresVendaProduto.valorTotal = 0;
     this.vendaProduto.valoresVendaProduto.valorTotalBrl = 0;
+  }
+
+  calcularConsolidado(rowIndex) {
+
+    console.log(rowIndex);
+
+    this.valoresPassageirosConsolidados = new VendaValoresPassageirosConsolidados;
+    this.valoresProdutoConsolidado = new VendaValoresProdutoConsolidado;
+
+    this.valorTotalComissao = 0;
+
+    for (const vendaProdutoPassageiro of this.vendaProdutos[rowIndex].vendaProdutoPassageiro) {
+      this.valoresPassageirosConsolidados.valorProduto += vendaProdutoPassageiro.valorProdutoBrl;
+      this.valoresPassageirosConsolidados.taxaEmbarque += vendaProdutoPassageiro.taxasBrl;
+      this.valoresPassageirosConsolidados.outrasTaxas  += vendaProdutoPassageiro.outrasTaxasBrl;
+      this.valoresPassageirosConsolidados.taxaRav      += vendaProdutoPassageiro.taxaRavBrl;
+      this.valoresPassageirosConsolidados.taxaServicoOculta += vendaProdutoPassageiro.taxaServicoOcultaBrl;
+    }
+
+    this.valoresProdutoConsolidado.valorComissao =
+      this.vendaProdutos[rowIndex].valoresVendaProduto.comissaoValor;
+    this.valoresProdutoConsolidado.valorOver =
+      this.vendaProdutos[rowIndex].valoresVendaProduto.overValor;
+    this.valoresProdutoConsolidado.abatimentos =
+      this.vendaProdutos[rowIndex].valoresVendaProduto.operadoraAbatimentos;
+    this.valoresProdutoConsolidado.taxaServicoDestacada =
+      this.vendaProdutos[rowIndex].valoresVendaProduto.agenciaTaxaServDestac;
+    this.valoresProdutoConsolidado.desconto =
+      this.vendaProdutos[rowIndex].valoresVendaProduto.agenciaDesconto;
+    this.valoresProdutoConsolidado.valorTotal =
+      this.vendaProdutos[rowIndex].valoresVendaProduto.valorTotalBrl;
+
+    this.passageirosConsolidados = [this.valoresPassageirosConsolidados];
+    this.produtoConsolidado = [this.valoresProdutoConsolidado];
+
+    this.valorTotalComissao =
+      this.valoresPassageirosConsolidados.taxaServicoOculta +
+      this.valoresProdutoConsolidado.valorComissao +
+      this.valoresProdutoConsolidado.valorOver +
+      this.valoresProdutoConsolidado.taxaServicoDestacada -
+      this.valoresProdutoConsolidado.abatimentos -
+      this.valoresProdutoConsolidado.desconto;
+
   }
 }

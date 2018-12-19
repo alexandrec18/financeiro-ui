@@ -64,10 +64,10 @@ export class PessoaService {
 
     params = params.append('empresa', this.auth.jwtPayload.empresa.codigo);
 
-    return this.http.get<any>(`${this.pessoasUrl}?resumo`,
+    return this.http.get<any>(`${this.pessoasUrl}?sempaginacao`,
       { params })
       .toPromise()
-      .then(response => response.content);
+      .then();
   }
 
   excluir(codigo: number): Promise<void>  {

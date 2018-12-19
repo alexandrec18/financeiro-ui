@@ -54,8 +54,8 @@
   <p-dialog [header]="editando ? 'Edição Produto' : 'Novo Produto'"
     [(visible)]="exibindoFormularioVendaFormaPagamentoProduto"
     modal="modal" *ngIf="vendaFormaPagamentoProduto"
-    appendTo="body" [contentStyle]="{'min-height': '200px', 'max-height': '500px', 'max-width': '600px'}"
-    [responsive]="true">
+    appendTo="body" [contentStyle]="{'min-height': '210px', 'min-width': '650px'}"
+    [responsive]="true" (onShow)="onShow($event)">
 
     <form #frmFormaPagamentoProduto="ngForm" autocomplete="off"
       (ngSubmit)="confirmarFormaPagamentoProduto(frmFormaPagamentoProduto)">
@@ -67,8 +67,8 @@
 
             <p-dropdown name="produto" [options]="produtos"
               placeholder="Selecione..." [autoWidth]="false"
-              [filter]="true" [(ngModel)]="vendaFormaPagamentoProduto.produto"
-              required>
+              [(ngModel)]="vendaFormaPagamentoProduto.produto"
+              [showClear]="true" (onChange)="onChange($event)" required>
             </p-dropdown>
           </div>
 
@@ -88,6 +88,7 @@
           [disabled]="frmFormaPagamentoProduto.invalid">
         </button>
       </div>
+
     </form>
 
   </p-dialog>

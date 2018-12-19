@@ -1,6 +1,6 @@
 import { VendaService } from 'app/vendas/venda.service';
 import { FormControl } from '@angular/forms';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, OnDestroy } from '@angular/core';
 
 import { MenuItem } from 'primeng/api';
 
@@ -11,7 +11,7 @@ import { VendaFormaPagamento, VendaProduto } from './../../core/model';
   templateUrl: './venda-cadastro-pagamento.component.html',
   styleUrls: ['./venda-cadastro-pagamento.component.css']
 })
-export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
+export class VendaCadastroPagamentoComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() vendaFormaPagamentos: Array<VendaFormaPagamento>;
   @Input() vendaProdutos: Array<VendaProduto>;
@@ -30,16 +30,24 @@ export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
 
   formHeader: any;
 
-  constructor( private vendaService: VendaService ) { }
+  private subscription;
+
+  constructor(
+    private vendaService: VendaService
+  ) { }
 
   ngOnInit() {
     this.carregarFormaPagamento();
     this.carregarProdutosVendaProduto();
 
-    this.vendaService.emitirCalcularFormaPagamentoSaldo.subscribe( () => {
+    this.subscription = this.vendaService.emitirCalcularFormaPagamentoSaldo.subscribe( () => {
         this.calcularTotais()
       }
     );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   carregarFormaPagamento() {
@@ -60,7 +68,7 @@ export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
     this.produtos = this.vendaProdutos.map(v => ({
       label: this.descricaoProduto(v.produto),
       value: v.produto
-    })) ;
+    }));
   }
 
   descricaoPagamento(formaPagamento) {
@@ -76,17 +84,8 @@ export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
     return '';
   }
 
-  descricaoProduto(produto) {
-    if (produto === 'PA') {
-      return 'Passagem Aérea';
-    }
-    if (produto === 'DH') {
-      return 'Diárias de Hospedagem';
-    }
-    if (produto === 'PT') {
-      return 'Pacote Turístico';
-    }
-    return '';
+  descricaoProduto(produto: string) {
+    return this.vendaService.descricaoProduto(produto);
   }
 
   prepararNovaVendaPagamento() {
@@ -123,6 +122,9 @@ export class VendaCadastroPagamentoComponent implements OnInit, OnChanges {
 
   removerVendaPagamento(index: number) {
     this.vendaFormaPagamentos.splice(index, 1);
+    this.calclularTotaisPorPagamento();
+    this.calcularTotais();
+    this.calcularSaldoProdutos();
   }
 
   cartaoCreditoFornecedor() {

@@ -72,6 +72,10 @@ export class NavbarComponent implements OnInit {
                       {
                           label: 'Lançamentos por pessoa',
                           routerLink: '/relatorios/lancamentos'
+                      },
+                      {
+                        label: 'Lançamentos por período',
+                        routerLink: '/relatorios/lancamentos/por-periodo'
                       }
               ]}
           ]
